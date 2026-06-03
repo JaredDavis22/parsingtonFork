@@ -711,7 +711,8 @@ public interface StandardEvaluator extends Evaluator {
 		if (op == Operators.UNSIGNED_RIGHT_SHIFT_ASSIGN) return unsignedRightShiftAssign(a, b);
 
 		// Unknown operator.
-		return null;
+		throw new UnsupportedOperationException(op.toString() +" is not supported");
+
 	}
 
 }
