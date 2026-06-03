@@ -117,7 +117,7 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 	/** Tests {@link StandardEvaluator#dot(Object, Object)}. */
 	@Test
 	public void testDot() {
-		assertNull(e.dot(o(0), o(1)));
+		assertThrows(UnsupportedOperationException.class,() ->e.dot(o(0), o(1)));
 	}
 
 	// -- groups --
@@ -160,13 +160,13 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 	/** Tests {@link StandardEvaluator#transpose(Object)}. */
 	@Test
 	public void testTranspose() {
-		assertNull(e.transpose(o(0)));
+		assertThrows(UnsupportedOperationException.class,() ->e.transpose(o(0)));
 	}
 
 	/** Tests {@link StandardEvaluator#dotTranspose(Object)}. */
 	@Test
 	public void testDotTranspose() {
-		assertNull(e.dotTranspose(o(0)));
+		assertThrows(UnsupportedOperationException.class,() ->e.dotTranspose(o(0)));
 	}
 
 	/** Tests {@link StandardEvaluator#pow(Object, Object)}. */
@@ -180,7 +180,7 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 	/** Tests {@link StandardEvaluator#dotPow(Object, Object)}. */
 	@Test
 	public void testDotPow() {
-		assertNull(e.dotPow(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() ->e.dotPow(o(0), o(0)));
 	}
 
 	// -- postfix --
@@ -653,13 +653,13 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 	/** Tests {@link StandardEvaluator#question(Object, Object)}. */
 	@Test
 	public void testQuestion() {
-		assertNull(e.question(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() ->e.question(o(0), o(0)));
 	}
 
 	/** Tests {@link StandardEvaluator#colon(Object, Object)}. */
 	@Test
 	public void testColon() {
-		assertNull(e.colon(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() -> e.colon(o(0), o(0)));
 	}
 
 	// -- assignment --

@@ -70,4 +70,10 @@ public class DefaultTreeEvaluatorTest extends AbstractStandardEvaluatorTest {
 		assertEquals("yes", e.value(result));
 	}
 
+	@Test
+	public void testTernaryAssignment() {
+		final Object result = e.evaluate("2*2 < 3*4 ? 'yes' : 'no'");
+		assertEquals("yes", e.value(result));
+	}
+
 }

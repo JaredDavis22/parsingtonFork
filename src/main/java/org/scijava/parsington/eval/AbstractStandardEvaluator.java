@@ -117,8 +117,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 
 	@Override
 	public Object dot(final Object a, final Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("dot not implemented");
 	}
 
 	// -- groups --
@@ -143,14 +142,12 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 
 	@Override
 	public Object transpose(final Object a) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("transpose not implemented");
 	}
 
 	@Override
 	public Object dotTranspose(final Object a) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("dotTranspose not implemented");
 	}
 
 	@Override
@@ -167,8 +164,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 
 	@Override
 	public Object dotPow(final Object a, final Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("dotPow not supported");
 	}
 
 	// -- unary --
@@ -471,7 +467,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 
 	@Override
 	public Object instanceOf(final Object av, final Object bv) {
-		// NB: Unimplemented.
 		throw new UnsupportedOperationException("instanceOf not supported");
 	}
 
@@ -539,14 +534,12 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 
 	@Override
 	public Object question(final Object a, final Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("question not supported");
 	}
 
 	@Override
 	public Object colon(Object a, Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("colon not supported");
 	}
 
 	// -- Helper methods - type matching --
