@@ -472,7 +472,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	@Override
 	public Object instanceOf(final Object av, final Object bv) {
 		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("instanceOf not supported");
 	}
 
 	// -- equality --

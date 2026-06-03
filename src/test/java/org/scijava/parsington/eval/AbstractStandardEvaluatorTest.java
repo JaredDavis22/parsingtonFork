@@ -533,7 +533,7 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 	/** Tests {@link StandardEvaluator#instanceOf(Object, Object)}. */
 	@Test
 	public void testInstanceOf() {
-		assertNull(e.instanceOf(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() -> e.instanceOf(o(0), o(0)));
 	}
 
 	// -- equality --
