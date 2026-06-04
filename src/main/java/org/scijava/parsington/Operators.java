@@ -35,6 +35,7 @@ import static org.scijava.parsington.Operator.Associativity.RIGHT;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.scijava.parsington.Operator.Associativity;
@@ -171,67 +172,66 @@ public final class Operators {
 	public static final Operator UNSIGNED_RIGHT_SHIFT_ASSIGN = op(">>>=", 2,
 		RIGHT, 0);
 
-	public static final List<Operator> operatorList = new ArrayList<>();
+	private static final List<Operator> operatorList = new ArrayList<>(
+			Arrays.asList(
+					DOT,
+					PARENS,
+					BRACKETS,
+					BRACES,
+					TRANSPOSE,
+					DOT_TRANSPOSE,
+					POW,
+					DOT_POW,
+					POST_INC,
+					POST_DEC,
+					PRE_INC,
+					PRE_DEC,
+					POS,
+					NEG,
+					COMPLEMENT,
+					NOT,
+					MUL,
+					DIV,
+					MOD,
+					RIGHT_DIV,
+					DOT_MUL,
+					DOT_DIV,
+					DOT_RIGHT_DIV,
+					ADD,
+					SUB,
+					LEFT_SHIFT,
+					RIGHT_SHIFT,
+					UNSIGNED_RIGHT_SHIFT,
+					LESS_THAN,
+					GREATER_THAN,
+					LESS_THAN_OR_EQUAL,
+					GREATER_THAN_OR_EQUAL,
+					INSTANCEOF,
+					EQUAL,
+					NOT_EQUAL,
+					BITWISE_AND,
+					BITWISE_OR,
+					LOGICAL_AND,
+					LOGICAL_OR,
+					QUESTION,
+					COLON,
+					ASSIGN,
+					POW_ASSIGN,
+					DOT_POW_ASSIGN,
+					MUL_ASSIGN,
+					DIV_ASSIGN,
+					MOD_ASSIGN,
+					RIGHT_DIV_ASSIGN,
+					DOT_DIV_ASSIGN,
+					DOT_RIGHT_DIV_ASSIGN,
+					ADD_ASSIGN,
+					SUB_ASSIGN,
+					AND_ASSIGN,
+					OR_ASSIGN,
+					LEFT_SHIFT_ASSIGN,
+					RIGHT_SHIFT_ASSIGN,
+					UNSIGNED_RIGHT_SHIFT_ASSIGN));
 
-	static {
-		operatorList.add(DOT); // Not implemented by default however it is frequently implemented by callers
-		operatorList.add(PARENS);
-		operatorList.add(BRACKETS);
-		operatorList.add(BRACES);
-		operatorList.add(TRANSPOSE);
-		operatorList.add(DOT_TRANSPOSE);
-		operatorList.add(POW);
-		operatorList.add(DOT_POW);
-		operatorList.add(POST_INC);
-		operatorList.add(POST_DEC);
-		operatorList.add(PRE_INC);
-		operatorList.add(PRE_DEC);
-		operatorList.add(POS);
-		operatorList.add(NEG);
-		operatorList.add(COMPLEMENT);
-		operatorList.add(NOT);
-		operatorList.add(MUL);
-		operatorList.add(DIV);
-		operatorList.add(MOD);
-		operatorList.add(RIGHT_DIV);
-		operatorList.add(DOT_MUL);
-		operatorList.add(DOT_DIV);
-		operatorList.add(DOT_RIGHT_DIV);
-		operatorList.add(ADD);
-		operatorList.add(SUB);
-		operatorList.add(LEFT_SHIFT);
-		operatorList.add(RIGHT_SHIFT);
-		operatorList.add(UNSIGNED_RIGHT_SHIFT);
-		operatorList.add(LESS_THAN);
-		operatorList.add(GREATER_THAN);
-		operatorList.add(LESS_THAN_OR_EQUAL);
-		operatorList.add(GREATER_THAN_OR_EQUAL);
-		operatorList.add(INSTANCEOF);
-		operatorList.add(EQUAL);
-		operatorList.add(NOT_EQUAL);
-		operatorList.add(BITWISE_AND);
-		operatorList.add(BITWISE_OR);
-		operatorList.add(LOGICAL_AND);
-		operatorList.add(LOGICAL_OR);
-		operatorList.add(QUESTION);
-		operatorList.add(COLON);
-		operatorList.add(ASSIGN);
-		operatorList.add(POW_ASSIGN);
-		operatorList.add(DOT_POW_ASSIGN);
-		operatorList.add(MUL_ASSIGN);
-		operatorList.add(DIV_ASSIGN);
-		operatorList.add(MOD_ASSIGN);
-		operatorList.add(RIGHT_DIV_ASSIGN);
-		operatorList.add(DOT_DIV_ASSIGN);
-		operatorList.add(DOT_RIGHT_DIV_ASSIGN);
-		operatorList.add(ADD_ASSIGN);
-		operatorList.add(SUB_ASSIGN);
-		operatorList.add(AND_ASSIGN);
-		operatorList.add(OR_ASSIGN);
-		operatorList.add(LEFT_SHIFT_ASSIGN);
-		operatorList.add(RIGHT_SHIFT_ASSIGN);
-		operatorList.add(UNSIGNED_RIGHT_SHIFT_ASSIGN);
-	}
 
 
 	private Operators() {
