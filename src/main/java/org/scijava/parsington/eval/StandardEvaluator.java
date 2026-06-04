@@ -656,7 +656,7 @@ public interface StandardEvaluator extends Evaluator {
 		if (Tokens.isMatchingGroup(op, Operators.BRACKETS)) return brackets(args);
 		if (Tokens.isMatchingGroup(op, Operators.BRACES)) return braces(args);
 
-		switch (op.getToken()+op.getArity()+op.getAssociativity()) {
+		switch (op.getKey()) {
 			case "*2LEFT":
 				return mul(a, b);
 			case "/2LEFT":
