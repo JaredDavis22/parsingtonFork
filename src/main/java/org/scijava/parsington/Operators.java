@@ -263,10 +263,4 @@ public final class Operators {
 		return new Group(leftSymbol, rightSymbol, precedence);
 	}
 
-	private static boolean isOperator(final Field f) {
-		final int mods = f.getModifiers();
-		return Modifier.isStatic(mods) && Modifier.isFinal(mods) &&
-			Operator.class.isAssignableFrom(f.getType());
-	}
-
 }
