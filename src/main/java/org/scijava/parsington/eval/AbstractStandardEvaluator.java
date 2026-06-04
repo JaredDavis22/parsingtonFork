@@ -110,7 +110,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		}
 
 		// NB: Unknown function type.
-		return null;
+		throw new UnsupportedOperationException("function not implemented for a=" + a);
 	}
 
 	// -- dot --
@@ -156,7 +156,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return pow(d(av), d(bv));
 		if (isBI(av) && isI(bv)) return pow(bi(av), i(bv));
 		if (isBD(av) && isI(bv)) return pow(bd(av), i(bv));
-		return null;
+		throw new UnsupportedOperationException("pow parameters not supported. av=" + av + " bv="+bv);
 	}
 	public double pow(final double av, final double bv) { return Math.pow(av, bv); }
 	public BigInteger pow(final BigInteger av, final int bv) { return av.pow(bv); }
@@ -206,7 +206,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		final Object av = value(a);
 		if (isI(av)) return complement(i(av));
 		if (isL(av)) return complement(l(av));
-		return null;
+		throw new UnsupportedOperationException("complement parameter not supported. av=" + av);
 	}
 	public int complement(final int a) { return ~a; }
 	public long complement(final long a) { return ~a; }
@@ -226,7 +226,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return mul(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return mul(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return mul(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("mul parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int mul(final int av, final int bv) { return av * bv; }
 	public long mul(final long av, final long bv) { return av * bv; }
@@ -248,7 +248,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return div(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return div(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return div(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("div parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int div(final int av, final int bv) { return av / bv; }
 	public long div(final long av, final long bv) { return av / bv; }
@@ -270,7 +270,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return mod(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return mod(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return mod(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("mod parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int mod(final int av, final int bv) { return av % bv; }
 	public long mod(final long av, final long bv) { return av % bv; }
@@ -285,26 +285,22 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 
 	@Override
 	public Object rightDiv(final Object a, final Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("rightDiv not supported");
 	}
 
 	@Override
 	public Object dotMul(Object a, Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("dotMul not supported");
 	}
 
 	@Override
 	public Object dotDiv(final Object a, final Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("dotDiv not supported");
 	}
 
 	@Override
 	public Object dotRightDiv(final Object a, final Object b) {
-		// NB: Unimplemented.
-		return null;
+		throw new UnsupportedOperationException("dotRightDiv not supported");
 	}
 
 	// -- additive --
@@ -319,7 +315,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return add(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return add(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return add(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("add parameters not supported. av=" + av + " bv="+bv);
 	}
 	public String add(final String av, final String bv) { return av + bv; }
 	public int add(final int av, final int bv) { return av + bv; }
@@ -342,7 +338,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return sub(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return sub(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return sub(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("sub parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int sub(final int av, final int bv) { return av - bv; }
 	public long sub(final long av, final long bv) { return av - bv; }
@@ -363,7 +359,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isI(av) && isI(bv)) return leftShift(i(av), i(bv));
 		if (isL(av) && isL(bv)) return leftShift(l(av), l(bv));
 		if (isBI(av) && isI(bv)) return leftShift(bi(av), i(bv));
-		return null;
+		throw new UnsupportedOperationException("leftShift parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int leftShift(final int av, final int bv) { return av << bv; }
 	public long leftShift(final long av, final long bv) { return av << bv; }
@@ -377,7 +373,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isI(av) && isI(bv)) return rightShift(i(av), i(bv));
 		if (isL(av) && isL(bv)) return rightShift(l(av), l(bv));
 		if (isBI(av) && isI(bv)) return rightShift(bi(av), i(bv));
-		return null;
+		throw new UnsupportedOperationException("rightShift parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int rightShift(final int av, final int bv) { return av >> bv; }
 	public long rightShift(final long av, final long bv) { return av >> bv; }
@@ -390,7 +386,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		final Object av = value(a), bv = value(b);
 		if (isI(av) && isI(bv)) return unsignedRightShift(i(av), i(bv));
 		if (isL(av) && isL(bv)) return unsignedRightShift(l(av), l(bv));
-		return null;
+		throw new UnsupportedOperationException("unsignedRightShift parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int unsignedRightShift(final int av, final int bv) { return av >>> bv; }
 	public long unsignedRightShift(final long av, final long bv) { return av >>> bv; }
@@ -408,7 +404,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return lessThan(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return lessThan(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return lessThan(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("lessThan parameters not supported. av=" + av + " bv="+bv);
 	}
 	public <T> boolean lessThan(final Comparable<T> av, final T bv) {
 		return av.compareTo(bv) < 0;
@@ -425,7 +421,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return greaterThan(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return greaterThan(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return greaterThan(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("greaterThan parameters not supported. av=" + av + " bv="+bv);
 	}
 	public <T> boolean greaterThan(final Comparable<T> av, final T bv) {
 		return av.compareTo(bv) > 0;
@@ -442,7 +438,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return lessThanOrEqual(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return lessThanOrEqual(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return lessThanOrEqual(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("lessThanOrEqual parameters not supported. av=" + av + " bv="+bv);
 	}
 	public <T> boolean lessThanOrEqual(final Comparable<T> av, final T bv) {
 		return av.compareTo(bv) <= 0;
@@ -459,7 +455,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isD(av) && isD(bv)) return greaterThanOrEqual(d(av), d(bv));
 		if (isBI(av) && isBI(bv)) return greaterThanOrEqual(bi(av), bi(bv));
 		if (isBD(av) && isBD(bv)) return greaterThanOrEqual(bd(av), bd(bv));
-		return null;
+		throw new UnsupportedOperationException("greaterThanOrEqual parameters not supported. av=" + av + " bv="+bv);
 	}
 	public <T> boolean greaterThanOrEqual(final Comparable<T> av, final T bv) {
 		return av.compareTo(bv) >= 0;
@@ -490,7 +486,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isI(av) && isI(bv)) return bitwiseAnd(i(av), i(bv));
 		if (isL(av) && isL(bv)) return bitwiseAnd(l(av), l(bv));
 		if (isBI(av) && isBI(bv)) return bitwiseAnd(bi(av), bi(bv));
-		return null;
+		throw new UnsupportedOperationException("bitwiseAnd parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int bitwiseAnd(final int av, final int bv) { return av & bv; }
 	public long bitwiseAnd(final long av, final long bv) { return av & bv; }
@@ -504,7 +500,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		if (isI(av) && isI(bv)) return bitwiseOr(i(av), i(bv));
 		if (isL(av) && isL(bv)) return bitwiseOr(l(av), l(bv));
 		if (isBI(av) && isBI(bv)) return bitwiseOr(bi(av), bi(bv));
-		return null;
+		throw new UnsupportedOperationException("bitwiseOr parameters not supported. av=" + av + " bv="+bv);
 	}
 	public int bitwiseOr(final int av, final int bv) { return av | bv; }
 	public long bitwiseOr(final long av, final long bv) { return av | bv; }
@@ -518,7 +514,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	public Object logicalAnd(final Object a, final Object b) {
 		final Object av = value(a), bv = value(b);
 		if (isBool(av) && isBool(bv)) return logicalAnd(bool(av), bool(bv));
-		return null;
+		throw new UnsupportedOperationException("logicalAnd parameters not supported. av=" + av + " bv="+bv);
 	}
 	public boolean logicalAnd(final boolean av, final boolean bv) { return av && bv; }
 
@@ -526,7 +522,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	public Object logicalOr(final Object a, final Object b) {
 		final Object av = value(a), bv = value(b);
 		if (isBool(av) && isBool(bv)) return logicalOr(bool(av), bool(bv));
-		return null;
+		throw new UnsupportedOperationException("logicalOr parameters not supported. av=" + av + " bv="+bv);
 	}
 	public boolean logicalOr(final boolean av, final boolean bv) { return av || bv; }
 

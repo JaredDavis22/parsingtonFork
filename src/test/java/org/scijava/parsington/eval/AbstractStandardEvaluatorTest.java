@@ -109,7 +109,7 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertEquals("b", e.function(v, Arrays.asList(1)));
 		assertEquals("c", e.function(v, Arrays.asList(2)));
 
-		assertNull(e.function(o(0), o(1)));
+		assertThrows(UnsupportedOperationException.class,() ->e.function(o(0), o(1)));
 	}
 
 	// -- dot --
@@ -319,19 +319,19 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 	/** Tests {@link StandardEvaluator#rightDiv(Object, Object)}. */
 	@Test
 	public void testRightDiv() {
-		assertNull(e.rightDiv(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() -> e.rightDiv(o(0), o(0)));
 	}
 
 	/** Tests {@link StandardEvaluator#dotDiv(Object, Object)}. */
 	@Test
 	public void testDotDiv() {
-		assertNull(e.dotDiv(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() -> e.dotDiv(o(0), o(0)));
 	}
 
 	/** Tests {@link StandardEvaluator#dotRightDiv(Object, Object)}. */
 	@Test
 	public void testDotRightDiv() {
-		assertNull(e.dotRightDiv(o(0), o(0)));
+		assertThrows(UnsupportedOperationException.class,() -> e.dotRightDiv(o(0), o(0)));
 	}
 
 	// -- additive --
@@ -346,6 +346,7 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertNumber(3.6d, e.add(o(1.5d), o(2.1d)));
 		assertNumber(bi(10), e.add(o(bi(4)), o(bi(6))));
 		assertNumber(bd(3.6), e.add(o(bd(1.5)), o(bd(2.1))));
+		assertThrows(UnsupportedOperationException.class,() -> e.add(o(2), o("bOrNot")));
 	}
 
 	/** Tests {@link StandardEvaluator#sub(Object, Object)}. */
