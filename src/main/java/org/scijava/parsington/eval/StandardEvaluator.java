@@ -766,7 +766,7 @@ public interface StandardEvaluator extends Evaluator {
 			case ":2LEFT":
 				return colon(a, b);
 			default:
-				throw new UnsupportedOperationException(op.toString() + " is not supported with arity "+ op.getArity() + " and association "+ op.getAssociativity());
+				throw new UnsupportedOperationException(op + " is not supported with arity "+ op.getArity() + " and associativity "+ op.getAssociativity());
 		}
 	}
 }
