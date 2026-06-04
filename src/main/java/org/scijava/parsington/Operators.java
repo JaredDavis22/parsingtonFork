@@ -172,6 +172,69 @@ public final class Operators {
 	public static final Operator UNSIGNED_RIGHT_SHIFT_ASSIGN = op(">>>=", 2,
 		RIGHT, 0);
 
+	public static final List<Operator> operatorList = new ArrayList<>();
+
+	static {
+		operatorList.add(DOT); // Not implemented by default however it is frequently implemented by callers
+		operatorList.add(PARENS);
+		operatorList.add(BRACKETS);
+		operatorList.add(BRACES);
+		operatorList.add(TRANSPOSE);
+		operatorList.add(DOT_TRANSPOSE);
+		operatorList.add(POW);
+		operatorList.add(DOT_POW);
+		operatorList.add(POST_INC);
+		operatorList.add(POST_DEC);
+		operatorList.add(PRE_INC);
+		operatorList.add(PRE_DEC);
+		operatorList.add(POS);
+		operatorList.add(NEG);
+		operatorList.add(COMPLEMENT);
+		operatorList.add(NOT);
+		operatorList.add(MUL);
+		operatorList.add(DIV);
+		operatorList.add(MOD);
+		operatorList.add(RIGHT_DIV);
+		operatorList.add(DOT_MUL);
+		operatorList.add(DOT_DIV);
+		operatorList.add(DOT_RIGHT_DIV);
+		operatorList.add(ADD);
+		operatorList.add(SUB);
+		operatorList.add(LEFT_SHIFT);
+		operatorList.add(RIGHT_SHIFT);
+		operatorList.add(UNSIGNED_RIGHT_SHIFT);
+		operatorList.add(LESS_THAN);
+		operatorList.add(GREATER_THAN);
+		operatorList.add(LESS_THAN_OR_EQUAL);
+		operatorList.add(GREATER_THAN_OR_EQUAL);
+		operatorList.add(INSTANCEOF);
+		operatorList.add(EQUAL);
+		operatorList.add(NOT_EQUAL);
+		operatorList.add(BITWISE_AND);
+		operatorList.add(BITWISE_OR);
+		operatorList.add(LOGICAL_AND);
+		operatorList.add(LOGICAL_OR);
+		operatorList.add(QUESTION);
+		operatorList.add(COLON);
+		operatorList.add(ASSIGN);
+		operatorList.add(POW_ASSIGN);
+		operatorList.add(DOT_POW_ASSIGN);
+		operatorList.add(MUL_ASSIGN);
+		operatorList.add(DIV_ASSIGN);
+		operatorList.add(MOD_ASSIGN);
+		operatorList.add(RIGHT_DIV_ASSIGN);
+		operatorList.add(DOT_DIV_ASSIGN);
+		operatorList.add(DOT_RIGHT_DIV_ASSIGN);
+		operatorList.add(ADD_ASSIGN);
+		operatorList.add(SUB_ASSIGN);
+		operatorList.add(AND_ASSIGN);
+		operatorList.add(OR_ASSIGN);
+		operatorList.add(LEFT_SHIFT_ASSIGN);
+		operatorList.add(RIGHT_SHIFT_ASSIGN);
+		operatorList.add(UNSIGNED_RIGHT_SHIFT_ASSIGN);
+	}
+
+
 	private Operators() {
 		// NB: Prevent instantiation of utility class.
 	}
@@ -183,19 +246,7 @@ public final class Operators {
 	 *         {@link Operators} class, in declaration order.
 	 */
 	public static List<Operator> standardList() {
-		// Build the standard list from all available Operator constants.
-		final ArrayList<Operator> ops = new ArrayList<>();
-		for (final Field f : Operators.class.getFields()) {
-			if (!isOperator(f)) continue;
-			try {
-				ops.add((Operator) f.get(null));
-			}
-			catch (final IllegalAccessException exc) {
-				// This should never happen.
-				throw new IllegalStateException(exc);
-			}
-		}
-		return ops;
+		return new ArrayList<>(operatorList);
 	}
 
 	// -- Helper methods --
