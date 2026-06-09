@@ -148,6 +148,15 @@ public interface Evaluator {
 	Object get(String name);
 
 	/**
+	 * Gets the value of a variable.
+	 *
+	 * @param name The name of the variable whose value you want.
+	 * @param defaultValue The return value supplied if name does not exist.
+	 * @return The variable's value.
+	 */
+	Object getOrDefault(String name, Object defaultValue);
+
+	/**
 	 * Sets the value of a variable.
 	 * 
 	 * @param name The name of the variable whose value you want to set.

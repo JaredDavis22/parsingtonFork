@@ -90,6 +90,13 @@ public abstract class AbstractEvaluator implements Evaluator {
 	}
 
 	@Override
+	public Object getOrDefault(final String name, Object defaultValue) {
+		return vars.getOrDefault(name, defaultValue);
+	}
+
+
+
+	@Override
 	public Map<String, Object> getAll() {
 		return Collections.unmodifiableMap(vars);
 	}
