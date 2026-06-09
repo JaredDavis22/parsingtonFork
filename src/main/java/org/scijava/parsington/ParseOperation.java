@@ -30,9 +30,7 @@
 
 package org.scijava.parsington;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 /** A stateful parsing operation. */
 public class ParseOperation {
@@ -43,6 +41,25 @@ public class ParseOperation {
 	protected final Position pos = new Position();
 	protected final Deque<Object> stack = new ArrayDeque<>();
 	protected final LinkedList<Object> outputQueue = new LinkedList<>();
+
+
+	List<OperatorFinder> finders = new ArrayList<>();
+
+	public void buildFinders() {
+		finders.clear();
+		int lastLength =0;
+		OperatorFinder finder=null;
+		for (Operator op : parser.operators()) {
+			if (op.getToken().length() != lastLength) {
+				lastLength = op.getToken().length();
+				finder = new OperatorFinder();
+				finder.length = lastLength;
+				finders.add(finder);
+			}
+            List<Operator> list = finder.operatorMap.computeIfAbsent(op.getToken(), k -> new ArrayList<>());
+            list.add(op);
+		}
+	}
 
 	/**
 	 * State flag for parsing context.
@@ -58,6 +75,7 @@ public class ParseOperation {
 	{
 		this.parser = parser;
 		this.expression = expression;
+		buildFinders();
 	}
 
 	/**
@@ -242,9 +260,18 @@ public class ParseOperation {
 	 * @return The parsed operator, or null if the next token is not one.
 	 */
 	protected Operator parseOperator() {
-		for (final Operator op : parser.operators()) {
-			final String symbol = op.getToken();
-			if (operatorMatches(op, symbol)) return op;
+		// Assumes parser.operators are in order by descending length
+		for (OperatorFinder finder : finders) {
+			final int ndx = pos.get();
+			final int last = ndx + finder.length;
+			if (last <= expression.length()) {
+				List<Operator> ops = finder.operatorMap.get(expression.substring(ndx, ndx + finder.length));
+				if (ops != null) {
+					for (Operator op : ops) {
+						if (operatorMatches(op, op.getToken())) return op;
+					}
+				}
+			}
 		}
 		return null;
 	}
