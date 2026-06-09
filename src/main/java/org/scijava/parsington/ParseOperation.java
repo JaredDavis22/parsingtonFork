@@ -43,20 +43,19 @@ public class ParseOperation {
 	protected final LinkedList<Object> outputQueue = new LinkedList<>();
 
 
-	List<OperatorFinder> finders = new ArrayList<>();
-
+	List<Integer> operatorLengths = new ArrayList<>();
+	Map<String, List<Operator>> operatorMap = new HashMap<>(Operators.standardList().size());
 	public void buildFinders() {
-		finders.clear();
-		int lastLength =0;
-		OperatorFinder finder=null;
+		operatorLengths.clear();
+		operatorMap.clear();
+		int lastLength =-1;
 		for (Operator op : parser.operators()) {
-			if (op.getToken().length() != lastLength) {
-				lastLength = op.getToken().length();
-				finder = new OperatorFinder();
-				finder.length = lastLength;
-				finders.add(finder);
+			int opLength = op.getToken().length();
+			if (opLength != lastLength) {
+				operatorLengths.add(opLength);
+				lastLength = opLength;
 			}
-            List<Operator> list = finder.operatorMap.computeIfAbsent(op.getToken(), k -> new ArrayList<>());
+            List<Operator> list = operatorMap.computeIfAbsent(op.getToken(), k -> new ArrayList<>());
             list.add(op);
 		}
 	}
@@ -261,11 +260,11 @@ public class ParseOperation {
 	 */
 	protected Operator parseOperator() {
 		// Assumes parser.operators are in order by descending length
-		for (OperatorFinder finder : finders) {
+		for (Integer length : operatorLengths) {
 			final int ndx = pos.get();
-			final int last = ndx + finder.length;
+			final int last = ndx + length;
 			if (last <= expression.length()) {
-				List<Operator> ops = finder.operatorMap.get(expression.substring(ndx, ndx + finder.length));
+				List<Operator> ops = operatorMap.get(expression.substring(ndx, last));
 				if (ops != null) {
 					for (Operator op : ops) {
 						if (operatorMatches(op, op.getToken())) return op;
