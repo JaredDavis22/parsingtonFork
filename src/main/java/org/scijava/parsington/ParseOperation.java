@@ -45,6 +45,22 @@ public class ParseOperation {
 
 	List<OperatorFinder> finders = new ArrayList<>();
 
+
+	ParsingNode start = new ParsingNode();
+
+	public void buildOperatorNode() {
+		for (Operator op : parser.operators()) {
+			String text = op.getToken();
+			int lengthminusone = text.length()-1;
+			ParsingNode node = start;
+			for (int i = 0; i <= lengthminusone; i++) {
+				char ch = text.charAt(i);
+				node = node.addNextValue(ch, (i == lengthminusone) ? op : null);
+			}
+		}
+
+	}
+
 	public void buildFinders() {
 		finders.clear();
 		int lastLength =0;
@@ -75,7 +91,8 @@ public class ParseOperation {
 	{
 		this.parser = parser;
 		this.expression = expression;
-		buildFinders();
+	//	buildFinders();
+		buildOperatorNode();
 	}
 
 	/**
@@ -261,16 +278,19 @@ public class ParseOperation {
 	 */
 	protected Operator parseOperator() {
 		// Assumes parser.operators are in order by descending length
-		for (OperatorFinder finder : finders) {
-			final int ndx = pos.get();
-			final int last = ndx + finder.length;
-			if (last <= expression.length()) {
-				List<Operator> ops = finder.operatorMap.get(expression.substring(ndx, ndx + finder.length));
-				if (ops != null) {
-					for (Operator op : ops) {
-						if (operatorMatches(op, op.getToken())) return op;
-					}
-				}
+		ParsingNode node = start;
+		List<Operator> lastHit = null;
+		int ndx = pos.get();
+		int last = expression.length();
+		// test for 1 char? assume we have at least one char
+		while ((ndx < last) && (node != null)) {
+			node= node.hasValueNext(expression.charAt(ndx++));
+			if (node == null) break;
+			lastHit = node.payload;
+		}
+		if (lastHit != null) {
+			for (Operator op : lastHit) {
+				if (operatorMatches(op, op.getToken())) return op;
 			}
 		}
 		return null;
