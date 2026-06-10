@@ -43,37 +43,19 @@ public class ParseOperation {
 	protected final LinkedList<Object> outputQueue = new LinkedList<>();
 
 
-	List<OperatorFinder> finders = new ArrayList<>();
+	protected final ParsingNode start = new ParsingNode();
 
 
-	ParsingNode start = new ParsingNode();
-
+	// Test code
 	public void buildOperatorNode() {
 		for (Operator op : parser.operators()) {
-			String text = op.getToken();
-			int lengthminusone = text.length()-1;
+			String textToMatch = op.getToken();
+			int lengthMinusOne = textToMatch.length()-1;
 			ParsingNode node = start;
-			for (int i = 0; i <= lengthminusone; i++) {
-				char ch = text.charAt(i);
-				node = node.addNextValue(ch, (i == lengthminusone) ? op : null);
+			for (int i = 0; i <= lengthMinusOne; i++) {
+				char ch = textToMatch.charAt(i);
+				node = node.addNextValue(ch, (i == lengthMinusOne) ? op : null);
 			}
-		}
-
-	}
-
-	public void buildFinders() {
-		finders.clear();
-		int lastLength =0;
-		OperatorFinder finder=null;
-		for (Operator op : parser.operators()) {
-			if (op.getToken().length() != lastLength) {
-				lastLength = op.getToken().length();
-				finder = new OperatorFinder();
-				finder.length = lastLength;
-				finders.add(finder);
-			}
-            List<Operator> list = finder.operatorMap.computeIfAbsent(op.getToken(), k -> new ArrayList<>());
-            list.add(op);
 		}
 	}
 
@@ -91,7 +73,6 @@ public class ParseOperation {
 	{
 		this.parser = parser;
 		this.expression = expression;
-	//	buildFinders();
 		buildOperatorNode();
 	}
 
@@ -277,16 +258,13 @@ public class ParseOperation {
 	 * @return The parsed operator, or null if the next token is not one.
 	 */
 	protected Operator parseOperator() {
-		// Assumes parser.operators are in order by descending length
 		ParsingNode node = start;
 		List<Operator> lastHit = null;
 		int ndx = pos.get();
 		int last = expression.length();
-		// test for 1 char? assume we have at least one char
 		while ((ndx < last) && (node != null)) {
-			node= node.hasValueNext(expression.charAt(ndx++));
-			if (node == null) break;
-			lastHit = node.payload;
+			node = node.hasValueNext(expression.charAt(ndx++));
+			if (node != null) lastHit = node.payload;
 		}
 		if (lastHit != null) {
 			for (Operator op : lastHit) {
