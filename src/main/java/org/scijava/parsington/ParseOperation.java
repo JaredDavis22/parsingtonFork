@@ -30,7 +30,9 @@
 
 package org.scijava.parsington;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.LinkedList;
 
 /** A stateful parsing operation. */
 public class ParseOperation {
@@ -41,23 +43,6 @@ public class ParseOperation {
 	protected final Position pos = new Position();
 	protected final Deque<Object> stack = new ArrayDeque<>();
 	protected final LinkedList<Object> outputQueue = new LinkedList<>();
-
-
-	protected final ParsingNode start = new ParsingNode();
-
-
-	// Test code
-	public void buildOperatorNode() {
-		for (Operator op : parser.operators()) {
-			String textToMatch = op.getToken();
-			int lengthMinusOne = textToMatch.length()-1;
-			ParsingNode node = start;
-			for (int i = 0; i <= lengthMinusOne; i++) {
-				char ch = textToMatch.charAt(i);
-				node = node.addNextValue(ch, (i == lengthMinusOne) ? op : null);
-			}
-		}
-	}
 
 	/**
 	 * State flag for parsing context.
@@ -73,7 +58,6 @@ public class ParseOperation {
 	{
 		this.parser = parser;
 		this.expression = expression;
-		buildOperatorNode();
 	}
 
 	/**
@@ -258,18 +242,9 @@ public class ParseOperation {
 	 * @return The parsed operator, or null if the next token is not one.
 	 */
 	protected Operator parseOperator() {
-		ParsingNode node = start;
-		List<Operator> lastHit = null;
-		int ndx = pos.get();
-		int last = expression.length();
-		while ((ndx < last) && (node != null)) {
-			node = node.hasValueNext(expression.charAt(ndx++));
-			if (node != null) lastHit = node.payload;
-		}
-		if (lastHit != null) {
-			for (Operator op : lastHit) {
-				if (operatorMatches(op, op.getToken())) return op;
-			}
+		for (final Operator op : parser.operators()) {
+			final String symbol = op.getToken();
+			if (operatorMatches(op, symbol)) return op;
 		}
 		return null;
 	}
