@@ -652,66 +652,121 @@ public interface StandardEvaluator extends Evaluator {
 
 		// Let the case logic begin!
 		if (op instanceof Function) return function(a, b);
-		if (op == Operators.DOT) return dot(a, b);
 		if (Tokens.isMatchingGroup(op, Operators.PARENS)) return parens(args);
 		if (Tokens.isMatchingGroup(op, Operators.BRACKETS)) return brackets(args);
 		if (Tokens.isMatchingGroup(op, Operators.BRACES)) return braces(args);
-		if (op == Operators.TRANSPOSE) return transpose(a);
-		if (op == Operators.DOT_TRANSPOSE) return dotTranspose(a);
-		if (op == Operators.POW) return pow(a, b);
-		if (op == Operators.DOT_POW) return dotPow(a, b);
-		if (op == Operators.POST_INC) return postInc(a);
-		if (op == Operators.POST_DEC) return postDec(a);
-		if (op == Operators.PRE_INC) return preInc(a);
-		if (op == Operators.PRE_DEC) return preDec(a);
-		if (op == Operators.POS) return pos(a);
-		if (op == Operators.NEG) return neg(a);
-		if (op == Operators.COMPLEMENT) return complement(a);
-		if (op == Operators.NOT) return not(a);
-		if (op == Operators.MUL) return mul(a, b);
-		if (op == Operators.DIV) return div(a, b);
-		if (op == Operators.MOD) return mod(a, b);
-		if (op == Operators.RIGHT_DIV) return rightDiv(a, b);
-		if (op == Operators.DOT_MUL) return dotMul(a, b);
-		if (op == Operators.DOT_DIV) return dotDiv(a, b);
-		if (op == Operators.DOT_RIGHT_DIV) return dotRightDiv(a, b);
-		if (op == Operators.ADD) return add(a, b);
-		if (op == Operators.SUB) return sub(a, b);
-		if (op == Operators.LEFT_SHIFT) return leftShift(a, b);
-		if (op == Operators.RIGHT_SHIFT) return rightShift(a, b);
-		if (op == Operators.UNSIGNED_RIGHT_SHIFT) return unsignedRightShift(a, b);
-		if (op == Operators.LESS_THAN) return lessThan(a, b);
-		if (op == Operators.GREATER_THAN) return greaterThan(a, b);
-		if (op == Operators.LESS_THAN_OR_EQUAL) return lessThanOrEqual(a, b);
-		if (op == Operators.GREATER_THAN_OR_EQUAL) return greaterThanOrEqual(a, b);
-		if (op == Operators.INSTANCEOF) return instanceOf(a, b);
-		if (op == Operators.EQUAL) return equal(a, b);
-		if (op == Operators.NOT_EQUAL) return notEqual(a, b);
-		if (op == Operators.BITWISE_AND) return bitwiseAnd(a, b);
-		if (op == Operators.BITWISE_OR) return bitwiseOr(a, b);
-		if (op == Operators.LOGICAL_AND) return logicalAnd(a, b);
-		if (op == Operators.LOGICAL_OR) return logicalOr(a, b);
-		if (op == Operators.QUESTION) return question(a, b);
-		if (op == Operators.COLON) return colon(a, b);
-		if (op == Operators.ASSIGN) return assign(a, b);
-		if (op == Operators.POW_ASSIGN) return powAssign(a, b);
-		if (op == Operators.DOT_POW_ASSIGN) return dotPowAssign(a, b);
-		if (op == Operators.MUL_ASSIGN) return mulAssign(a, b);
-		if (op == Operators.DIV_ASSIGN) return divAssign(a, b);
-		if (op == Operators.MOD_ASSIGN) return modAssign(a, b);
-		if (op == Operators.RIGHT_DIV_ASSIGN) return rightDivAssign(a, b);
-		if (op == Operators.DOT_DIV_ASSIGN) return dotDivAssign(a, b);
-		if (op == Operators.DOT_RIGHT_DIV_ASSIGN) return dotRightDivAssign(a, b);
-		if (op == Operators.ADD_ASSIGN) return addAssign(a, b);
-		if (op == Operators.SUB_ASSIGN) return subAssign(a, b);
-		if (op == Operators.AND_ASSIGN) return andAssign(a, b);
-		if (op == Operators.OR_ASSIGN) return orAssign(a, b);
-		if (op == Operators.LEFT_SHIFT_ASSIGN) return leftShiftAssign(a, b);
-		if (op == Operators.RIGHT_SHIFT_ASSIGN) return rightShiftAssign(a, b);
-		if (op == Operators.UNSIGNED_RIGHT_SHIFT_ASSIGN) return unsignedRightShiftAssign(a, b);
 
-		// Unknown operator.
-		return null;
+		switch (op.getKey()) {
+			case "*2LEFT":
+				return mul(a, b);
+			case "/2LEFT":
+				return div(a, b);
+			case "%2LEFT":
+				return mod(a, b);
+			case "+2LEFT":
+				return add(a, b);
+			case "-2LEFT":
+				return sub(a, b);
+			case "\\2LEFT":
+				return rightDiv(a, b);
+			case "^2RIGHT":
+				return pow(a, b);
+			case "=2RIGHT":
+				return assign(a, b);
+			case "==2LEFT":
+				return equal(a, b);
+			case "!=2LEFT":
+				return notEqual(a, b);
+			case "<2LEFT":
+				return lessThan(a, b);
+			case ">2LEFT":
+				return greaterThan(a, b);
+			case "<=2LEFT":
+				return lessThanOrEqual(a, b);
+			case ">=2LEFT":
+				return greaterThanOrEqual(a, b);
+			case "+1RIGHT":
+				return pos(a);
+			case "-1RIGHT":
+				return neg(a);
+			case "~1RIGHT":
+				return complement(a);
+			case "!1RIGHT":
+				return not(a);
+			case "*=2RIGHT":
+				return mulAssign(a, b);
+			case "/=2RIGHT":
+				return divAssign(a, b);
+			case "<<2LEFT":
+				return leftShift(a, b);
+			case ">>2LEFT":
+				return rightShift(a, b);
+			case ">>>2LEFT":
+				return unsignedRightShift(a, b);
+			case "&2LEFT":
+				return bitwiseAnd(a, b);
+			case "|2LEFT":
+				return bitwiseOr(a, b);
+			case "&&2LEFT":
+				return logicalAnd(a, b);
+			case "||2LEFT":
+				return logicalOr(a, b);
+			case "^=2RIGHT":
+				return powAssign(a, b);
+			case "%=2RIGHT":
+				return modAssign(a, b);
+			case "\\=2RIGHT":
+				return rightDivAssign(a, b);
+			case "+=2RIGHT":
+				return addAssign(a, b);
+			case "-=2RIGHT":
+				return subAssign(a, b);
+			case "&=2RIGHT":
+				return andAssign(a, b);
+			case "|=2RIGHT":
+				return orAssign(a, b);
+			case "<<=RIGHT":
+				return leftShiftAssign(a, b);
+			case ">>=RIGHT":
+				return rightShiftAssign(a, b);
+			case ">>>=RIGHT":
+				return unsignedRightShiftAssign(a, b);
+			case "++1LEFT":
+				return postInc(a);
+			case "--1LEFT":
+				return postDec(a);
+			case "++1RIGHT":
+				return preInc(a);
+			case "--1RIGHT":
+				return preDec(a);
+			case ".2LEFT":
+				return dot(a, b);
+			case "'1LEFT":
+				return transpose(a);
+			case ".'1LEFT":
+				return dotTranspose(a);
+			case ".^2RIGHT":
+				return dotPow(a, b);
+			case "./=2RIGHT'":
+				return dotDivAssign(a, b);
+			case ".\\=2RIGHT'":
+				return dotRightDivAssign(a, b);
+			case ".*2LEFT":
+				return dotMul(a, b);
+			case "./=2LEFT":
+				return dotDiv(a, b);
+			case ".\\=2LEFT":
+				return dotRightDiv(a, b);
+			case ".^=2RIGHT":
+				return dotPowAssign(a, b);
+			case "instanceof2LEFT":
+				return instanceOf(a, b);
+			case "?2LEFT":
+				return question(a, b);
+			case ":2LEFT":
+				return colon(a, b);
+			default:
+				throw new UnsupportedOperationException(op + " is not supported with arity "+ op.getArity() + " and associativity "+ op.getAssociativity());
+		}
 	}
-
 }

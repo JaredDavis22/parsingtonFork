@@ -47,6 +47,7 @@ public class Operator extends Token implements Comparable<Operator> {
 	private final int arity;
 	private final Associativity associativity;
 	private final double precedence;
+	private final String key;
 
 	public Operator(final String symbol, final int arity,
 		final Associativity associativity, final double precedence)
@@ -55,6 +56,7 @@ public class Operator extends Token implements Comparable<Operator> {
 		this.arity = arity;
 		this.associativity = associativity;
 		this.precedence = precedence;
+		this.key = symbol + arity + associativity;
 	}
 
 	// -- Operator methods --
@@ -98,6 +100,15 @@ public class Operator extends Token implements Comparable<Operator> {
 	public boolean isRightAssociative() {
 		final Associativity a = getAssociativity();
 		return a == Associativity.RIGHT || a == Associativity.EITHER;
+	}
+
+	/**
+	 * Gets the operator's key which is the symbol + arity + associativity.
+	 *
+	 * @return operator key
+	 */
+	public String getKey() {
+		return key;
 	}
 
 	/**
