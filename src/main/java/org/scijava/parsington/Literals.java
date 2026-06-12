@@ -54,7 +54,7 @@ public final class Literals {
 		"(([-+]?)0([0-7]+)([Ll]?)).*");
 
 	private static final Pattern DECIMAL = Pattern.compile(
-		"(([-+]?[0-9]+(\\.[0-9]*)?([Ee][-+]?[0-9]+)?)([DdFfLl])?).*");
+		"(([-+]?[0-9]+(\\.[0-9]*)?(?:[Ee][-+]?[0-9]+)?)([DdFfLl])?).*");
 
 	private static final ThreadLocal<Matcher> hexMatcher = ThreadLocal.withInitial(() -> HEX.matcher(""));
 	private static final ThreadLocal<Matcher> binaryMatcher = ThreadLocal.withInitial(() -> BINARY.matcher(""));
@@ -407,7 +407,7 @@ public final class Literals {
 		final Matcher m = decimalMatcher.get().reset(sub(s, pos)); //matcher(DECIMAL, s, pos);
 		if (!m.matches()) return null;
 		final String number = m.group(2);
-		final String force = m.group(5);
+		final String force = m.group(4);
 		final boolean forceLong = "l".equalsIgnoreCase(force);
 		final boolean forceFloat = "f".equalsIgnoreCase(force);
 		final boolean forceDouble = "d".equalsIgnoreCase(force);
