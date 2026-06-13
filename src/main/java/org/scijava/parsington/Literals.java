@@ -57,10 +57,10 @@ public final class Literals {
 	private static final Pattern DECIMAL = Pattern.compile(
 		"(([-+]?[0-9]+(\\.[0-9]*)?(?:[Ee][-+]?[0-9]+)?)([DdFfLl])?).*");
 
-	private static final ThreadLocal<Matcher> hexMatcher = ThreadLocal.withInitial(() -> HEX.matcher(""));
-	private static final ThreadLocal<Matcher> binaryMatcher = ThreadLocal.withInitial(() -> BINARY.matcher(""));
-	private static final ThreadLocal<Matcher> octalMatcher = ThreadLocal.withInitial(() -> OCTAL.matcher(""));
-	private static final ThreadLocal<Matcher> decimalMatcher = ThreadLocal.withInitial(() -> DECIMAL.matcher(""));
+	private static final Matcher hexMatcher =  HEX.matcher("");
+	private static final Matcher binaryMatcher =  BINARY.matcher("");
+	private static final Matcher octalMatcher = OCTAL.matcher("");
+	private static final Matcher decimalMatcher =  DECIMAL.matcher("");
 
 	private Literals() {
 		// NB: Prevent instantiation of utility class.
@@ -322,7 +322,7 @@ public final class Literals {
 	public static Number parseHex(final CharSequence s, final Position pos) {
 		if (!isNumberSyntax(s, pos)) return null;
 
-		final Matcher m = hexMatcher.get().reset(sub(s, pos)); //matcher(HEX, s, pos);
+		final Matcher m = hexMatcher.reset(sub(s, pos)); //matcher(HEX, s, pos);
 		if (!m.matches()) return null;
 		final String sign = m.group(2);    // + or - or nothing
 		final String integer = m.group(3); // hex digits before decimal point
@@ -369,7 +369,7 @@ public final class Literals {
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
 	public static Number parseBinary(final CharSequence s, final Position pos) {
-		return parseInteger(binaryMatcher.get(), s, pos, 2);
+		return parseInteger(binaryMatcher, s, pos, 2);
 	}
 
 	/**
@@ -386,7 +386,7 @@ public final class Literals {
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
 	public static Number parseOctal(final CharSequence s, final Position pos) {
-		return parseInteger(octalMatcher.get(), s, pos, 8);
+		return parseInteger(octalMatcher, s, pos, 8);
 	}
 
 	/**
@@ -405,7 +405,7 @@ public final class Literals {
 	public static Number parseDecimal(final CharSequence s, final Position pos) {
 		if (!isNumberSyntax(s, pos)) return null;
 
-		final Matcher m = decimalMatcher.get().reset(sub(s, pos)); //matcher(DECIMAL, s, pos);
+		final Matcher m = decimalMatcher.reset(sub(s, pos)); //matcher(DECIMAL, s, pos);
 		if (!m.matches()) return null;
 		final String number = m.group(2);
 		final String force = m.group(4);
