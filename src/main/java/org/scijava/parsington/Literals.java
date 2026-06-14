@@ -445,11 +445,8 @@ public final class Literals {
 		final Number octal = parseOctal(s, pos);
 		if (octal != null) return octal;
 
-		final Number decimal = parseDecimal(s, pos);
-		if (decimal != null) return decimal;
-
-		return null;
-	}
+        return parseDecimal(s, pos);
+    }
 
 	/**
 	 * Parses a literal of any known type (booleans, strings and numbers).
