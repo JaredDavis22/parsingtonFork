@@ -76,6 +76,8 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	implements StandardEvaluator
 {
 
+	private final Literals literals =  new Literals();
+
 	public AbstractStandardEvaluator() {
 		super();
 	}
@@ -594,7 +596,7 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	/** Coerces the given value to a number. */
 	private Number num(final Object v) {
 		final Number n = cast(v, Number.class);
-		return n != null ? n : Literals.parseNumber(v.toString());
+		return n != null ? n : literals.parseNumber(v.toString());
 	}
 
 	private int i(final Object v) { return num(v).intValue(); }

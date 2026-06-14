@@ -57,14 +57,10 @@ public final class Literals {
 	private static final Pattern DECIMAL = Pattern.compile(
 		"(([-+]?[0-9]+(\\.[0-9]*)?(?:[Ee][-+]?[0-9]+)?)([DdFfLl])?).*");
 
-	private static final ThreadLocal<Matcher> hexMatcher = ThreadLocal.withInitial(() -> HEX.matcher(""));
-	private static final ThreadLocal<Matcher> binaryMatcher = ThreadLocal.withInitial(() -> BINARY.matcher(""));
-	private static final ThreadLocal<Matcher> octalMatcher = ThreadLocal.withInitial(() -> OCTAL.matcher(""));
-	private static final ThreadLocal<Matcher> decimalMatcher = ThreadLocal.withInitial(() -> DECIMAL.matcher(""));
-
-	private Literals() {
-		// NB: Prevent instantiation of utility class.
-	}
+	Matcher hexMatcher =  HEX.matcher("");
+	Matcher octalMatcher = OCTAL.matcher("");
+	Matcher binaryMatcher = BINARY.matcher("");
+	Matcher decimalMatcher = DECIMAL.matcher("");
 
 	/**
 	 * Parses a boolean literal (i.e., true and false).
@@ -74,7 +70,7 @@ public final class Literals {
 	 *         {@link Boolean#FALSE}&mdash; or null if the string does not begin
 	 *         with a boolean literal.
 	 */
-	public static Boolean parseBoolean(final CharSequence s) {
+	public Boolean parseBoolean(final CharSequence s) {
 		return parseBoolean(s, new Position());
 	}
 
@@ -92,7 +88,7 @@ public final class Literals {
 	 *         Returns null if the string does not begin with a single or double
 	 *         quote.
 	 */
-	public static String parseString(final CharSequence s) {
+	public String parseString(final CharSequence s) {
 		return parseString(s, new Position());
 	}
 
@@ -110,7 +106,7 @@ public final class Literals {
 	 *         {@code F} suffix is given; or a {@link Double} otherwise (the
 	 *         {@code D} suffix is optional).
 	 */
-	public static Number parseHex(final CharSequence s) {
+	public Number parseHex(final CharSequence s) {
 		return parseHex(s, new Position());
 	}
 
@@ -123,7 +119,7 @@ public final class Literals {
 	 *         given; or a {@link BigInteger} if the value is too large even for
 	 *         {@code long}.
 	 */
-	public static Number parseBinary(final CharSequence s) {
+	public Number parseBinary(final CharSequence s) {
 		return parseBinary(s, new Position());
 	}
 
@@ -136,7 +132,7 @@ public final class Literals {
 	 *         given; or a {@link BigInteger} if the value is too large even for
 	 *         {@code long}.
 	 */
-	public static Number parseOctal(final CharSequence s) {
+	public Number parseOctal(final CharSequence s) {
 		return parseOctal(s, new Position());
 	}
 
@@ -151,7 +147,7 @@ public final class Literals {
 	 *         appropriate. Returns null if the string does not begin with the
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
-	public static Number parseDecimal(final CharSequence s) {
+	public Number parseDecimal(final CharSequence s) {
 		return parseDecimal(s, new Position());
 	}
 
@@ -169,7 +165,7 @@ public final class Literals {
 	 *         appropriate. Returns null if the string does not begin with the
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
-	public static Number parseNumber(final CharSequence s) {
+	public Number parseNumber(final CharSequence s) {
 		return parseNumber(s, new Position());
 	}
 
@@ -185,7 +181,7 @@ public final class Literals {
 	 * @see #parseString(CharSequence)
 	 * @see #parseNumber(CharSequence)
 	 */
-	public static Object parseLiteral(final CharSequence s) {
+	public Object parseLiteral(final CharSequence s) {
 		return parseLiteral(s, new Position());
 	}
 
@@ -200,7 +196,7 @@ public final class Literals {
 	 *         {@link Boolean#FALSE}&mdash; or null if the string does not begin
 	 *         with a boolean literal.
 	 */
-	public static Boolean parseBoolean(final CharSequence s, final Position pos) {
+	public Boolean parseBoolean(final CharSequence s, final Position pos) {
 
 		if (isWord(s, pos, "true")) {
 			pos.inc(4);
@@ -230,7 +226,7 @@ public final class Literals {
 	 *         Returns null if the string does not begin with a single or double
 	 *         quote.
 	 */
-	public static String parseString(final CharSequence s, final Position pos) {
+	public String parseString(final CharSequence s, final Position pos) {
 		final char quote = pos.ch(s);
 		if (quote != '"' && quote != '\'') return null;
 		int index = pos.get() + 1;
@@ -319,10 +315,10 @@ public final class Literals {
 	 *         if the string does not begin with the numeric literal telltale of a
 	 *         0-9 digit with optional leading sign.
 	 */
-	public static Number parseHex(final CharSequence s, final Position pos) {
+	public Number parseHex(final CharSequence s, final Position pos) {
 		if (!isNumberSyntax(s, pos)) return null;
 
-		final Matcher m = hexMatcher.get().reset(sub(s, pos)); //matcher(HEX, s, pos);
+		final Matcher m = hexMatcher.reset(sub(s, pos));
 		if (!m.matches()) return null;
 		final String sign = m.group(2);    // + or - or nothing
 		final String integer = m.group(3); // hex digits before decimal point
@@ -368,8 +364,8 @@ public final class Literals {
 	 *         {@code long}; or {@code null} if the string does not begin with the
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
-	public static Number parseBinary(final CharSequence s, final Position pos) {
-		return parseInteger(binaryMatcher.get(), s, pos, 2);
+	public Number parseBinary(final CharSequence s, final Position pos) {
+		return parseInteger(binaryMatcher, s, pos, 2);
 	}
 
 	/**
@@ -385,8 +381,8 @@ public final class Literals {
 	 *         {@code long}; or {@code null} if the string does not begin with the
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
-	public static Number parseOctal(final CharSequence s, final Position pos) {
-		return parseInteger(octalMatcher.get(), s, pos, 8);
+	public Number parseOctal(final CharSequence s, final Position pos) {
+		return parseInteger(octalMatcher, s, pos, 8);
 	}
 
 	/**
@@ -402,10 +398,10 @@ public final class Literals {
 	 *         appropriate. Returns null if the string does not begin with the
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
-	public static Number parseDecimal(final CharSequence s, final Position pos) {
+	public Number parseDecimal(final CharSequence s, final Position pos) {
 		if (!isNumberSyntax(s, pos)) return null;
 
-		final Matcher m = decimalMatcher.get().reset(sub(s, pos)); //matcher(DECIMAL, s, pos);
+		final Matcher m = decimalMatcher.reset(sub(s, pos));
 		if (!m.matches()) return null;
 		final String number = m.group(2);
 		final String force = m.group(4);
@@ -439,7 +435,7 @@ public final class Literals {
 	 *         appropriate. Returns null if the string does not begin with the
 	 *         numeric literal telltale of a 0-9 digit with optional leading sign.
 	 */
-	public static Number parseNumber(final CharSequence s, final Position pos) {
+	public Number parseNumber(final CharSequence s, final Position pos) {
 		final Number hex = parseHex(s, pos);
 		if (hex != null) return hex;
 
@@ -470,26 +466,23 @@ public final class Literals {
 	 * @see #parseString(CharSequence, Position)
 	 * @see #parseNumber(CharSequence, Position)
 	 */
-	public static Object parseLiteral(final CharSequence s, final Position pos) {
+	public Object parseLiteral(final CharSequence s, final Position pos) {
 		final Boolean bool = parseBoolean(s, pos);
 		if (bool != null) return bool;
 
 		final String str = parseString(s, pos);
 		if (str != null) return str;
 
-		final Number num = parseNumber(s, pos);
-		if (num != null) return num;
-
-		return null;
-	}
+        return parseNumber(s, pos); // either value or null
+    }
 
 	// -- Helper methods --
 
-	private static boolean isOctal(final char c) {
+	private boolean isOctal(final char c) {
 		return c >= '0' && c <= '7';
 	}
 
-	private static char hex(final CharSequence s, final Position pos,
+	private char hex(final CharSequence s, final Position pos,
 		final int index)
 	{
 		final char c = pos.ch(s, index);
@@ -500,7 +493,7 @@ public final class Literals {
 		return '\0'; // NB: Unreachable.
 	}
 
-	private static boolean
+	private boolean
 		isNumberSyntax(final CharSequence s, final Position pos)
 	{
 		final int i = pos.get();
@@ -511,12 +504,10 @@ public final class Literals {
 		return digit >= '0' && digit <= '9';
 	}
 
-	private static Number parseInteger(final Matcher m, final CharSequence s,
+	private Number parseInteger(final Matcher m, final CharSequence s,
 		final Position pos, final int base)
 	{
 		if (!isNumberSyntax(s, pos)) return null;
-
-		//final Matcher m = matcher(p, s, pos);
 		m.reset(sub(s, pos));
 		if (!m.matches()) return null;
 		final String sign = m.group(2);
@@ -526,7 +517,7 @@ public final class Literals {
 		return verifyResult(result, m, pos);
 	}
 
-	private static Number parseInteger(final String number,
+	private Number parseInteger(final String number,
 		final boolean forceLong, final int base)
 	{
 		if (!forceLong) {
@@ -560,7 +551,7 @@ public final class Literals {
 		return null;
 	}
 
-	private static Number parseDecimal(final String number,
+	private Number parseDecimal(final String number,
 		final boolean forceFloat, final boolean forceDouble)
 	{
 		if (forceFloat) {
@@ -595,17 +586,11 @@ public final class Literals {
 		return null;
 	}
 
-	private static Matcher matcher(final Pattern p, final CharSequence s,
-		final Position pos)
-	{
-		return p.matcher(sub(s, pos));
-	}
-
-	private static CharSequence sub(final CharSequence s, final Position pos) {
+	private CharSequence sub(final CharSequence s, final Position pos) {
 		return pos.get() == 0 ? s : new SubSequence(s, pos.get());
 	}
 
-	private static Number verifyResult(final Number result, final Matcher m,
+	private Number verifyResult(final Number result, final Matcher m,
 		final Position pos)
 	{
 		if (result == null) pos.die("Illegal numeric literal");
@@ -613,7 +598,7 @@ public final class Literals {
 		return result;
 	}
 
-	private static boolean isWord(final CharSequence s, final Position pos,
+	private boolean isWord(final CharSequence s, final Position pos,
 		final String word)
 	{
 		if (s.length() - pos.get() < word.length()) return false;
@@ -624,8 +609,7 @@ public final class Literals {
 		if (next >= 'a' && next <= 'z') return false;
 		if (next >= 'A' && next <= 'Z') return false;
 		if (next >= '0' && next <= '9') return false;
-		if (next == '_') return false;
-		return true;
-	}
+        return next != '_';
+    }
 
 }
