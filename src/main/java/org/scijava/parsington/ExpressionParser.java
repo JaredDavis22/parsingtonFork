@@ -59,6 +59,8 @@ public class ExpressionParser {
 	private final String statementSeparator;
 	private final BiFunction<ExpressionParser, String, ParseOperation> parseOperationFactory;
 	private final ParsingNode<Operator> parsingNodeOperatorStart;
+	Literals literals = new Literals();
+
 	/**
 	 * Creates an expression parser with the standard set of operators and default
 	 * separator symbols ({@code ,} for group elements, {@code ;} for statements).
@@ -237,6 +239,14 @@ public class ExpressionParser {
 		return parsingNodeOperatorStart;
 	}
 
+	/**
+	 * Gets the Literals instance
+	 *
+	 * @return Literals instance
+	 */
+	public Literals literals() {
+		return literals;
+	}
 
 	/**
 	 * Creates a mini deterministic finite automaton (DFA) from the list of operators.

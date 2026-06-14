@@ -45,6 +45,8 @@ public class ParseOperation {
 	protected final LinkedList<Object> outputQueue = new LinkedList<>();
 	// this is a copy of the value in ExpressionParser
 	private final ParsingNode<Operator> parsingNodeOperatorStart;
+	// this is a copy of the value in ExpressionParser
+	private final Literals literals;
 	/**
 	 * State flag for parsing context.
 	 * <ul>
@@ -60,6 +62,7 @@ public class ParseOperation {
 		this.parser = parser;
 		this.expression = expression;
 		parsingNodeOperatorStart = parser.getParsingNodeOperatorStart();
+		literals = parser.literals();
 	}
 
 	/**
@@ -178,7 +181,7 @@ public class ParseOperation {
 		// operators, or a quoted string with a quote operator.
 		if (infix) return null;
 
-		return Literals.parseLiteral(expression, pos);
+		return literals.parseLiteral(expression, pos);
 	}
 
 	/**
