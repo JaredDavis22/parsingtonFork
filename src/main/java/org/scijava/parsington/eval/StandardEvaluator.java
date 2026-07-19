@@ -101,13 +101,7 @@ public interface StandardEvaluator extends Evaluator {
 	 */
 	Object transpose(Object a);
 
-	/**
-	 * Applies the {@link Operators#DOT_TRANSPOSE} operator.
-	 * 
-	 * @param a The argument.
-	 * @return The result of the operation.
-	 */
-	Object dotTranspose(Object a);
+
 
 	/**
 	 * Applies the {@link Operators#POW} operator.
@@ -117,15 +111,6 @@ public interface StandardEvaluator extends Evaluator {
 	 * @return The result of the operation.
 	 */
 	Object pow(Object a, Object b);
-
-	/**
-	 * Applies the {@link Operators#DOT_POW} operator.
-	 * 
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	Object dotPow(Object a, Object b);
 
 	// -- postfix --
 
@@ -255,32 +240,8 @@ public interface StandardEvaluator extends Evaluator {
 	 */
 	Object rightDiv(Object a, Object b);
 
-	/**
-	 * Applies the {@link Operators#DOT_MUL} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	Object dotMul(Object a, Object b);
 
-	/**
-	 * Applies the {@link Operators#DOT_DIV} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	Object dotDiv(Object a, Object b);
 
-	/**
-	 * Applies the {@link Operators#DOT_RIGHT_DIV} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	Object dotRightDiv(Object a, Object b);
 
 	// -- additive --
 
@@ -369,14 +330,6 @@ public interface StandardEvaluator extends Evaluator {
 	 */
 	Object greaterThanOrEqual(Object a, Object b);
 
-	/**
-	 * Applies the {@link Operators#INSTANCEOF} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	Object instanceOf(Object a, Object b);
 
 	// -- equality --
 
@@ -485,17 +438,6 @@ public interface StandardEvaluator extends Evaluator {
 	}
 
 	/**
-	 * Applies the {@link Operators#DOT_POW_ASSIGN} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	default Object dotPowAssign(final Object a, final Object b) {
-		return assign(a, dotPow(a, b));
-	}
-
-	/**
 	 * Applies the {@link Operators#MUL_ASSIGN} operator.
 	 *
 	 * @param a The first argument.
@@ -537,28 +479,6 @@ public interface StandardEvaluator extends Evaluator {
 	 */
 	default Object rightDivAssign(final Object a, final Object b) {
 		return assign(a, rightDiv(a, b));
-	}
-
-	/**
-	 * Applies the {@link Operators#DOT_DIV_ASSIGN} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	default Object dotDivAssign(final Object a, final Object b) {
-		return assign(a, dotDiv(a, b));
-	}
-
-	/**
-	 * Applies the {@link Operators#DOT_RIGHT_DIV_ASSIGN} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	default Object dotRightDivAssign(final Object a, final Object b) {
-		return assign(a, dotRightDiv(a, b));
 	}
 
 	/**

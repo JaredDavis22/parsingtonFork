@@ -462,11 +462,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		return av.compareTo(bv) >= 0;
 	}
 
-	@Override
-	public Object instanceOf(final Object av, final Object bv) {
-		return throwUnimplementedOp("instanceOf");
-	}
-
 	// -- equality --
 
 	@Override

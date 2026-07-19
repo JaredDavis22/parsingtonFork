@@ -165,11 +165,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertUnimplemented(e::transpose);
 	}
 
-	/** Tests {@link StandardEvaluator#dotTranspose(Object)}. */
-	@Test
-	public void testDotTranspose() {
-		assertUnimplemented(e::dotTranspose);
-	}
 
 	/** Tests {@link StandardEvaluator#pow(Object, Object)}. */
 	@Test
@@ -179,11 +174,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertNumber(bd(15.625), e.pow(o(bd(2.5d)), o(3)));
 	}
 
-	/** Tests {@link StandardEvaluator#dotPow(Object, Object)}. */
-	@Test
-	public void testDotPow() {
-		assertUnimplemented(e::dotPow);
-	}
 
 	// -- postfix --
 
@@ -324,17 +314,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertUnimplemented(e::rightDiv);
 	}
 
-	/** Tests {@link StandardEvaluator#dotDiv(Object, Object)}. */
-	@Test
-	public void testDotDiv() {
-		assertUnimplemented(e::dotDiv);
-	}
-
-	/** Tests {@link StandardEvaluator#dotRightDiv(Object, Object)}. */
-	@Test
-	public void testDotRightDiv() {
-		assertUnimplemented(e::dotRightDiv);
-	}
 
 	// -- additive --
 
@@ -545,12 +524,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertBadTypes(e::greaterThanOrEqual, "13", 14);
 	}
 
-	/** Tests {@link StandardEvaluator#instanceOf(Object, Object)}. */
-	@Test
-	public void testInstanceOf() {
-		assertUnimplemented(e::instanceOf);
-	}
-
 	// -- equality --
 
 	/** Tests {@link StandardEvaluator#equal(Object, Object)}. */
@@ -715,11 +688,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertBadTypes(e::powAssign, 29, "30");
 	}
 
-	/** Tests {@link StandardEvaluator#dotPowAssign(Object, Object)}. */
-	@Test
-	public void testDotPowAssign() {
-		assertUnimplemented(e::dotPowAssign);
-	}
 
 	/** Tests {@link StandardEvaluator#mulAssign(Object, Object)}. */
 	@Test
@@ -766,17 +734,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertUnimplemented(e::rightDiv);
 	}
 
-	/** Tests {@link StandardEvaluator#dotDivAssign(Object, Object)}. */
-	@Test
-	public void testDotDivAssign() {
-		assertUnimplemented(e::dotDivAssign);
-	}
-
-	/** Tests {@link StandardEvaluator#dotRightDivAssign(Object, Object)}. */
-	@Test
-	public void testDotRightDivAssign() {
-		assertUnimplemented(e::dotRightDiv);
-	}
 
 	/** Tests {@link StandardEvaluator#addAssign(Object, Object)}. */
 	@Test
