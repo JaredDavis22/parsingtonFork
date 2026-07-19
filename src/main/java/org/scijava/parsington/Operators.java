@@ -71,9 +71,9 @@ public final class Operators {
 	// -- transpose, power --
 
 	public static final Operator TRANSPOSE = op("'", 1, LEFT, 15);
-	public static final Operator DOT_TRANSPOSE = op(".'", 1, LEFT, 15);
+	//public static final Operator DOT_TRANSPOSE = op(".'", 1, LEFT, 15);
 	public static final Operator POW = op("^", 2, RIGHT, 15);
-	public static final Operator DOT_POW = op(".^", 2, RIGHT, 15);
+	//public static final Operator DOT_POW = op(".^", 2, RIGHT, 15);
 
 	// -- postfix --
 
@@ -95,9 +95,9 @@ public final class Operators {
 	public static final Operator DIV = op("/", 2, LEFT, 12);
 	public static final Operator MOD = op("%", 2, LEFT, 12);
 	public static final Operator RIGHT_DIV = op("\\", 2, LEFT, 12);
-	public static final Operator DOT_MUL = op(".*", 2, LEFT, 12);
-	public static final Operator DOT_DIV = op("./", 2, LEFT, 12);
-	public static final Operator DOT_RIGHT_DIV = op(".\\", 2, LEFT, 12);
+	//public static final Operator DOT_MUL = op(".*", 2, LEFT, 12);
+	//public static final Operator DOT_DIV = op("./", 2, LEFT, 12);
+	//public static final Operator DOT_RIGHT_DIV = op(".\\", 2, LEFT, 12);
 
 	// -- additive --
 
@@ -116,7 +116,7 @@ public final class Operators {
 	public static final Operator GREATER_THAN = op(">", 2, LEFT, 8);
 	public static final Operator LESS_THAN_OR_EQUAL = op("<=", 2, LEFT, 8);
 	public static final Operator GREATER_THAN_OR_EQUAL = op(">=", 2, LEFT, 8);
-	public static final Operator INSTANCEOF = op("instanceof", 2, LEFT, 8);
+	//public static final Operator INSTANCEOF = op("instanceof", 2, LEFT, 8);
 
 	// -- equality --
 
@@ -155,13 +155,13 @@ public final class Operators {
 
 	public static final Operator ASSIGN = op("=", 2, RIGHT, 0);
 	public static final Operator POW_ASSIGN = op("^=", 2, RIGHT, 0);
-	public static final Operator DOT_POW_ASSIGN = op(".^=", 2, RIGHT, 0);
+	//public static final Operator DOT_POW_ASSIGN = op(".^=", 2, RIGHT, 0);
 	public static final Operator MUL_ASSIGN = op("*=", 2, RIGHT, 0);
 	public static final Operator DIV_ASSIGN = op("/=", 2, RIGHT, 0);
 	public static final Operator MOD_ASSIGN = op("%=", 2, RIGHT, 0);
 	public static final Operator RIGHT_DIV_ASSIGN = op("\\=", 2, RIGHT, 0);
-	public static final Operator DOT_DIV_ASSIGN = op("./=", 2, RIGHT, 0);
-	public static final Operator DOT_RIGHT_DIV_ASSIGN = op(".\\=", 2, RIGHT, 0);
+	//public static final Operator DOT_DIV_ASSIGN = op("./=", 2, RIGHT, 0);
+	//public static final Operator DOT_RIGHT_DIV_ASSIGN = op(".\\=", 2, RIGHT, 0);
 	public static final Operator ADD_ASSIGN = op("+=", 2, RIGHT, 0);
 	public static final Operator SUB_ASSIGN = op("-=", 2, RIGHT, 0);
 	public static final Operator AND_ASSIGN = op("&=", 2, RIGHT, 0);
