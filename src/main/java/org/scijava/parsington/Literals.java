@@ -56,10 +56,10 @@ public final class Literals {
 	private static final Pattern DECIMAL = Pattern.compile(
 		"(([-+]?[0-9]+(\\.[0-9]*)?(?:[Ee][-+]?[0-9]+)?)([DdFfLl])?).*");
 
-	Matcher hexMatcher =  HEX.matcher("");
-	Matcher octalMatcher = OCTAL.matcher("");
-	Matcher binaryMatcher = BINARY.matcher("");
-	Matcher decimalMatcher = DECIMAL.matcher("");
+	private final Matcher hexMatcher =  HEX.matcher("");
+	private final Matcher octalMatcher = OCTAL.matcher("");
+	private final Matcher binaryMatcher = BINARY.matcher("");
+	private final Matcher decimalMatcher = DECIMAL.matcher("");
 
 	/**
 	 * Parses a boolean literal (i.e., true and false).
