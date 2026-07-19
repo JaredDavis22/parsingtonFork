@@ -159,11 +159,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	}
 
 	@Override
-	public Object dotTranspose(final Object a) {
-		return throwUnsupportedImplementation("dotTranspose");
-	}
-
-	@Override
 	public Object pow(final Object a, final Object b) {
 		final Object av = value(a), bv = value(b);
 		if (isD(av) && isD(bv)) return pow(d(av), d(bv));
@@ -174,11 +169,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	public double pow(final double av, final double bv) { return Math.pow(av, bv); }
 	public BigInteger pow(final BigInteger av, final int bv) { return av.pow(bv); }
 	public BigDecimal pow(final BigDecimal av, final int bv) { return av.pow(bv); }
-
-	@Override
-	public Object dotPow(final Object a, final Object b) {
-		return throwUnsupportedImplementation("dotPow");
-	}
 
 	// -- unary --
 
@@ -299,21 +289,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	@Override
 	public Object rightDiv(final Object a, final Object b) {
 		return throwUnsupportedImplementation("rightDiv");
-	}
-
-	@Override
-	public Object dotMul(Object a, Object b) {
-		return throwUnsupportedImplementation("dotMul");
-	}
-
-	@Override
-	public Object dotDiv(final Object a, final Object b) {
-		return throwUnsupportedImplementation("dotDiv");
-	}
-
-	@Override
-	public Object dotRightDiv(final Object a, final Object b) {
-		return throwUnsupportedImplementation("dotRightDiv");
 	}
 
 	// -- additive --
@@ -472,11 +447,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	}
 	public <T> boolean greaterThanOrEqual(final Comparable<T> av, final T bv) {
 		return av.compareTo(bv) >= 0;
-	}
-
-	@Override
-	public Object instanceOf(final Object av, final Object bv) {
-		return throwUnsupportedImplementation("instanceOf");
 	}
 
 	// -- equality --

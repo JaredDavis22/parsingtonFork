@@ -162,11 +162,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertThrows(UnsupportedOperationException.class, () -> e.transpose(o(0)));
 	}
 
-	/** Tests {@link StandardEvaluator#dotTranspose(Object)}. */
-	@Test
-	public void testDotTranspose() {
-		assertThrows(UnsupportedOperationException.class, () -> e.dotTranspose(o(0)));
-	}
 
 	/** Tests {@link StandardEvaluator#pow(Object, Object)}. */
 	@Test
@@ -176,11 +171,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertNumber(bd(15.625), e.pow(o(bd(2.5d)), o(3)));
 	}
 
-	/** Tests {@link StandardEvaluator#dotPow(Object, Object)}. */
-	@Test
-	public void testDotPow() {
-		assertThrows(UnsupportedOperationException.class, () -> e.dotPow(o(0), o(0)));
-	}
 
 	// -- postfix --
 
@@ -321,17 +311,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertThrows(UnsupportedOperationException.class, () -> e.rightDiv(o(0), o(0)));
 	}
 
-	/** Tests {@link StandardEvaluator#dotDiv(Object, Object)}. */
-	@Test
-	public void testDotDiv() {
-		assertThrows(UnsupportedOperationException.class, () -> e.dotDiv(o(0), o(0)));
-	}
-
-	/** Tests {@link StandardEvaluator#dotRightDiv(Object, Object)}. */
-	@Test
-	public void testDotRightDiv() {
-		assertThrows(UnsupportedOperationException.class, () -> e.dotRightDiv(o(0), o(0)));
-	}
 
 	// -- additive --
 
@@ -529,12 +508,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertSame(true, e.greaterThanOrEqual(o(bd(17)), o(bd(16))));
 	}
 
-	/** Tests {@link StandardEvaluator#instanceOf(Object, Object)}. */
-	@Test
-	public void testInstanceOf() {
-		assertThrows(UnsupportedOperationException.class, () -> e.instanceOf(o(0), o(0)));
-	}
-
 	// -- equality --
 
 	/** Tests {@link StandardEvaluator#equal(Object, Object)}. */
@@ -686,11 +659,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		e.set(v, bd(2.5)); assertAssigned(bd(15.625), v, e.powAssign(v, 3));
 	}
 
-	/** Tests {@link StandardEvaluator#dotPowAssign(Object, Object)}. */
-	@Test
-	public void testDotPowAssign() {
-		// NB: Nothing to test; dotPow is unimplemented.
-	}
 
 	/** Tests {@link StandardEvaluator#mulAssign(Object, Object)}. */
 	@Test
@@ -734,17 +702,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		// NB: Nothing to test; rightDiv is unimplemented.
 	}
 
-	/** Tests {@link StandardEvaluator#dotDivAssign(Object, Object)}. */
-	@Test
-	public void testDotDivAssign() {
-		// NB: Nothing to test; dotDiv is unimplemented.
-	}
-
-	/** Tests {@link StandardEvaluator#dotRightDivAssign(Object, Object)}. */
-	@Test
-	public void testDotRightDivAssign() {
-		// NB: Nothing to test; dotRightDiv is unimplemented.
-	}
 
 	/** Tests {@link StandardEvaluator#addAssign(Object, Object)}. */
 	@Test
