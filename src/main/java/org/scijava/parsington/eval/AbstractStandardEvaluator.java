@@ -286,10 +286,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		return av.remainder(bv);
 	}
 
-	@Override
-	public Object rightDiv(final Object a, final Object b) {
-		return throwUnsupportedImplementation("rightDiv");
-	}
 
 	// -- additive --
 

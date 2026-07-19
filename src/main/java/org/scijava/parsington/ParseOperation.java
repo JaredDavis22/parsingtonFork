@@ -300,19 +300,6 @@ public class ParseOperation {
 	}
 
 	/**
-	 * Attempts to parse the given character.
-	 *
-	 * @return The character, or null if the next token is not that character.
-	 */
-	protected Character parseChar(final char c) {
-		if (currentChar() == c) {
-			pos.inc();
-			return c;
-		}
-		return null;
-	}
-
-	/**
 	 * Attempts to parse the given characters.
 	 *
 	 * @return The characters, or null if the next tokens are not those

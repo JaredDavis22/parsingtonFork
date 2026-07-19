@@ -94,7 +94,7 @@ public final class Operators {
 	public static final Operator MUL = op("*", 2, LEFT, 12);
 	public static final Operator DIV = op("/", 2, LEFT, 12);
 	public static final Operator MOD = op("%", 2, LEFT, 12);
-	public static final Operator RIGHT_DIV = op("\\", 2, LEFT, 12);
+	//public static final Operator RIGHT_DIV = op("\\", 2, LEFT, 12);
 	//public static final Operator DOT_MUL = op(".*", 2, LEFT, 12);
 	//public static final Operator DOT_DIV = op("./", 2, LEFT, 12);
 	//public static final Operator DOT_RIGHT_DIV = op(".\\", 2, LEFT, 12);
@@ -159,7 +159,7 @@ public final class Operators {
 	public static final Operator MUL_ASSIGN = op("*=", 2, RIGHT, 0);
 	public static final Operator DIV_ASSIGN = op("/=", 2, RIGHT, 0);
 	public static final Operator MOD_ASSIGN = op("%=", 2, RIGHT, 0);
-	public static final Operator RIGHT_DIV_ASSIGN = op("\\=", 2, RIGHT, 0);
+	//public static final Operator RIGHT_DIV_ASSIGN = op("\\=", 2, RIGHT, 0);
 	//public static final Operator DOT_DIV_ASSIGN = op("./=", 2, RIGHT, 0);
 	//public static final Operator DOT_RIGHT_DIV_ASSIGN = op(".\\=", 2, RIGHT, 0);
 	public static final Operator ADD_ASSIGN = op("+=", 2, RIGHT, 0);
@@ -171,6 +171,8 @@ public final class Operators {
 	public static final Operator UNSIGNED_RIGHT_SHIFT_ASSIGN = op(">>>=", 2,
 		RIGHT, 0);
 
+
+	// order of entries in list does not matter. It is sorted prior to use.
 	private static final List<Operator> operatorList = new ArrayList<>(
 			Arrays.asList(
 					DOT,
@@ -192,7 +194,7 @@ public final class Operators {
 					MUL,
 					DIV,
 					MOD,
-					RIGHT_DIV,
+					//RIGHT_DIV,
 					//DOT_MUL,
 					//DOT_DIV,
 					//DOT_RIGHT_DIV,
@@ -220,7 +222,7 @@ public final class Operators {
 					MUL_ASSIGN,
 					DIV_ASSIGN,
 					MOD_ASSIGN,
-					RIGHT_DIV_ASSIGN,
+					//RIGHT_DIV_ASSIGN,
 					//DOT_DIV_ASSIGN,
 					//DOT_RIGHT_DIV_ASSIGN,
 					ADD_ASSIGN,

@@ -137,7 +137,7 @@ public class ExpressionParserTest extends AbstractTest {
 		assertBinary(p, "a", Operators.MUL_ASSIGN, "b", "a*=b");
 		assertBinary(p, "a", Operators.DIV_ASSIGN, "b", "a/=b");
 		assertBinary(p, "a", Operators.MOD_ASSIGN, "b", "a%=b");
-		assertBinary(p, "a", Operators.RIGHT_DIV_ASSIGN, "b", "a\\=b");
+		//assertBinary(p, "a", Operators.RIGHT_DIV_ASSIGN, "b", "a\\=b");
 		//assertBinary(p, "a", Operators.DOT_DIV_ASSIGN, "b", "a./=b");
 		//assertBinary(p, "a", Operators.DOT_RIGHT_DIV_ASSIGN, "b", "a.\\=b");
 		assertBinary(p, "a", Operators.ADD_ASSIGN, "b", "a+=b");
@@ -154,19 +154,17 @@ public class ExpressionParserTest extends AbstractTest {
 	public void testMathOperators() {
 		final String expression =
 			"(a|=b)|(c&=d)&(e>>>=f)>>>(g>>=h)>>(i<<=j)<<(k-=l)-(m+=n)"
-				+ "+(s\\=t)\\(u%=v)%(w/=x)/(y*=z)"
+				+ "+(u%=v)%(w/=x)/(y*=z)"
 				+ "*(cc^=dd)^f(~ee--,-ff++,+--gg',++hh)";
 		final ExpressionParser parser = new ExpressionParser();
 		final LinkedList<Object> queue = parser.parsePostfix(expression);
 
-		// a b |= (1) c d &= (1) e f >>>= (1) g h >>= (1) >>> i j <<= (1) >> k l
-		// -= (1) m n += (1) - s t \= (1) u v %= (1) \ w x /= (1) % y z *=
+        // a b |= (1) c d &= (1) e f >>>= (1) g h >>= (1) >>> i j <<= (1) >> k l
+		// -= (1) m n += (1) - u v %= (1) w x /= (1) % y z *=
 		// (1) / cc dd ^= (1) f ee -- ~ ff ++ - gg ' -- + hh ++ (4) <Fn> ^ * + << & |
 
-
-
 		assertNotNull(queue);
-		assertEquals(75, queue.size());
+		assertEquals(70, queue.size());
 		assertVariable("a", queue.pop());
 		assertVariable("b", queue.pop());
 		assertSame(Operators.OR_ASSIGN, queue.pop());
@@ -207,16 +205,16 @@ public class ExpressionParserTest extends AbstractTest {
 		//assertSame(Operators.DOT_DIV_ASSIGN, queue.pop());
 		//assertGroup(Operators.PARENS, 1, queue.pop());
 		//assertSame(Operators.DOT_RIGHT_DIV, queue.pop());
-		assertVariable("s", queue.pop());
-		assertVariable("t", queue.pop());
-		assertSame(Operators.RIGHT_DIV_ASSIGN, queue.pop());
-		assertGroup(Operators.PARENS, 1, queue.pop());
+		//assertVariable("s", queue.pop());
+		//assertVariable("t", queue.pop());
+		//assertSame(Operators.RIGHT_DIV_ASSIGN, queue.pop());
+		//assertGroup(Operators.PARENS, 1, queue.pop());
 		//assertSame(Operators.DOT_DIV, queue.pop());
 		assertVariable("u", queue.pop());
 		assertVariable("v", queue.pop());
 		assertSame(Operators.MOD_ASSIGN, queue.pop());
 		assertGroup(Operators.PARENS, 1, queue.pop());
-		assertSame(Operators.RIGHT_DIV, queue.pop());
+		//assertSame(Operators.RIGHT_DIV, queue.pop());
 		assertVariable("w", queue.pop());
 		assertVariable("x", queue.pop());
 		assertSame(Operators.DIV_ASSIGN, queue.pop());
