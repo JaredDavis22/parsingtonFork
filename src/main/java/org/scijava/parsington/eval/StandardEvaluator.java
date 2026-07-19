@@ -231,17 +231,6 @@ public interface StandardEvaluator extends Evaluator {
 	 */
 	Object mod(Object a, Object b);
 
-	/**
-	 * Applies the {@link Operators#RIGHT_DIV} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	Object rightDiv(Object a, Object b);
-
-
-
 
 	// -- additive --
 
@@ -471,17 +460,6 @@ public interface StandardEvaluator extends Evaluator {
 	}
 
 	/**
-	 * Applies the {@link Operators#RIGHT_DIV_ASSIGN} operator.
-	 *
-	 * @param a The first argument.
-	 * @param b The second argument.
-	 * @return The result of the operation.
-	 */
-	default Object rightDivAssign(final Object a, final Object b) {
-		return assign(a, rightDiv(a, b));
-	}
-
-	/**
 	 * Applies the {@link Operators#ADD_ASSIGN} operator.
 	 *
 	 * @param a The first argument.
@@ -612,7 +590,7 @@ public interface StandardEvaluator extends Evaluator {
 		if (op == Operators.POW) return pow(a, b);
 		//if (op == Operators.DOT_POW) return dotPow(a, b);
 		if (op == Operators.COMPLEMENT) return complement(a);
-		if (op == Operators.RIGHT_DIV) return rightDiv(a, b);
+		//if (op == Operators.RIGHT_DIV) return rightDiv(a, b);
 		//if (op == Operators.DOT_MUL) return dotMul(a, b);
 		//if (op == Operators.DOT_DIV) return dotDiv(a, b);
 		//if (op == Operators.DOT_RIGHT_DIV) return dotRightDiv(a, b);
@@ -625,7 +603,7 @@ public interface StandardEvaluator extends Evaluator {
 		if (op == Operators.MUL_ASSIGN) return mulAssign(a, b);
 		if (op == Operators.DIV_ASSIGN) return divAssign(a, b);
 		if (op == Operators.MOD_ASSIGN) return modAssign(a, b);
-		if (op == Operators.RIGHT_DIV_ASSIGN) return rightDivAssign(a, b);
+		//if (op == Operators.RIGHT_DIV_ASSIGN) return rightDivAssign(a, b);
 		//if (op == Operators.DOT_DIV_ASSIGN) return dotDivAssign(a, b);
 		//if (op == Operators.DOT_RIGHT_DIV_ASSIGN) return dotRightDivAssign(a, b);
 		if (op == Operators.ADD_ASSIGN) return addAssign(a, b);

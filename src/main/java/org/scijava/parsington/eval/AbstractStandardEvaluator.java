@@ -146,10 +146,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		return throwUnimplementedOp("transpose");
 	}
 
-	@Override
-	public Object dotTranspose(final Object a) {
-		return throwUnimplementedOp("dotTranspose");
-	}
 
 	@Override
 	public Object pow(final Object a, final Object b) {
@@ -162,11 +158,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 	public double pow(final double av, final double bv) { return Math.pow(av, bv); }
 	public BigInteger pow(final BigInteger av, final int bv) { return av.pow(bv); }
 	public BigDecimal pow(final BigDecimal av, final int bv) { return av.pow(bv); }
-
-	@Override
-	public Object dotPow(final Object a, final Object b) {
-		return throwUnimplementedOp("dotPow");
-	}
 
 	// -- unary --
 
@@ -284,25 +275,6 @@ public abstract class AbstractStandardEvaluator extends AbstractEvaluator
 		return av.remainder(bv);
 	}
 
-	@Override
-	public Object rightDiv(final Object a, final Object b) {
-		return throwUnimplementedOp("rightDiv");
-	}
-
-	@Override
-	public Object dotMul(Object a, Object b) {
-		return throwUnimplementedOp("dotMul");
-	}
-
-	@Override
-	public Object dotDiv(final Object a, final Object b) {
-		return throwUnimplementedOp("dotDiv");
-	}
-
-	@Override
-	public Object dotRightDiv(final Object a, final Object b) {
-		return throwUnimplementedOp("dotRightDiv");
-	}
 
 	// -- additive --
 

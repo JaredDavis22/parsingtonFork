@@ -93,11 +93,6 @@ public class AbstractTest {
 		assertCount(2, tree);
 	}
 
-	protected void assertToken(final String expected, final Object token) {
-		assertNotNull(token);
-		assertEquals(expected, token.toString());
-	}
-
 	protected void assertSameLists(final List<?> expected, final List<?> actual) {
 		assertNotNull(actual);
 		assertEquals(expected.size(), actual.size());

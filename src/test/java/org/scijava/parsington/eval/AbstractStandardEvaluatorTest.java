@@ -308,13 +308,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		assertNumber(bd(1.75), e.mod(o(bd(8.75)), o(bd(3.5))));
 	}
 
-	/** Tests {@link StandardEvaluator#rightDiv(Object, Object)}. */
-	@Test
-	public void testRightDiv() {
-		assertUnimplemented(e::rightDiv);
-	}
-
-
 	// -- additive --
 
 	/** Tests {@link StandardEvaluator#add(Object, Object)}. */
@@ -727,13 +720,6 @@ public abstract class AbstractStandardEvaluatorTest extends AbstractEvaluatorTes
 		e.set(v, bd(8.75)); assertAssigned(bd(1.75), v, e.modAssign(v, bd(3.5)));
 		assertBadTypes(e::modAssign, 35, "36");
 	}
-
-	/** Tests {@link StandardEvaluator#rightDivAssign(Object, Object)}. */
-	@Test
-	public void testRightDivAssign() {
-		assertUnimplemented(e::rightDiv);
-	}
-
 
 	/** Tests {@link StandardEvaluator#addAssign(Object, Object)}. */
 	@Test

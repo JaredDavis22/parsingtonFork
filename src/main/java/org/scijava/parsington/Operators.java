@@ -94,7 +94,7 @@ public final class Operators {
 	public static final Operator MUL = op("*", 2, LEFT, 12);
 	public static final Operator DIV = op("/", 2, LEFT, 12);
 	public static final Operator MOD = op("%", 2, LEFT, 12);
-	public static final Operator RIGHT_DIV = op("\\", 2, LEFT, 12);
+	//public static final Operator RIGHT_DIV = op("\\", 2, LEFT, 12);
 	//public static final Operator DOT_MUL = op(".*", 2, LEFT, 12);
 	//public static final Operator DOT_DIV = op("./", 2, LEFT, 12);
 	//public static final Operator DOT_RIGHT_DIV = op(".\\", 2, LEFT, 12);
@@ -159,7 +159,7 @@ public final class Operators {
 	public static final Operator MUL_ASSIGN = op("*=", 2, RIGHT, 0);
 	public static final Operator DIV_ASSIGN = op("/=", 2, RIGHT, 0);
 	public static final Operator MOD_ASSIGN = op("%=", 2, RIGHT, 0);
-	public static final Operator RIGHT_DIV_ASSIGN = op("\\=", 2, RIGHT, 0);
+	//public static final Operator RIGHT_DIV_ASSIGN = op("\\=", 2, RIGHT, 0);
 	//public static final Operator DOT_DIV_ASSIGN = op("./=", 2, RIGHT, 0);
 	//public static final Operator DOT_RIGHT_DIV_ASSIGN = op(".\\=", 2, RIGHT, 0);
 	public static final Operator ADD_ASSIGN = op("+=", 2, RIGHT, 0);
