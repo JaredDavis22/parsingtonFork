@@ -323,6 +323,8 @@ public class TestExamples extends AbstractTest {
 		final Operator dollar = new Operator("$", 1, Associativity.RIGHT, 100);
 		operators.add(dollar);
 		final ExpressionParser parser = new ExpressionParser(operators);
+		String dotGraph = parser.getParsingNodeOperatorStart().emitDotGraph();
+		// paste dotGraph into https://dreampuf.github.io/GraphvizOnline to visualize the operators
 
 		// Create an evaluator that replaces $-prefixed variables
 		// with environment variables from the system.
