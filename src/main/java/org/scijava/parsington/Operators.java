@@ -71,9 +71,9 @@ public final class Operators {
 	// -- transpose, power --
 
 	public static final Operator TRANSPOSE = op("'", 1, LEFT, 15);
-	public static final Operator DOT_TRANSPOSE = op(".'", 1, LEFT, 15);
+	//public static final Operator DOT_TRANSPOSE = op(".'", 1, LEFT, 15);
 	public static final Operator POW = op("^", 2, RIGHT, 15);
-	public static final Operator DOT_POW = op(".^", 2, RIGHT, 15);
+	//public static final Operator DOT_POW = op(".^", 2, RIGHT, 15);
 
 	// -- postfix --
 
@@ -95,9 +95,9 @@ public final class Operators {
 	public static final Operator DIV = op("/", 2, LEFT, 12);
 	public static final Operator MOD = op("%", 2, LEFT, 12);
 	public static final Operator RIGHT_DIV = op("\\", 2, LEFT, 12);
-	public static final Operator DOT_MUL = op(".*", 2, LEFT, 12);
-	public static final Operator DOT_DIV = op("./", 2, LEFT, 12);
-	public static final Operator DOT_RIGHT_DIV = op(".\\", 2, LEFT, 12);
+	//public static final Operator DOT_MUL = op(".*", 2, LEFT, 12);
+	//public static final Operator DOT_DIV = op("./", 2, LEFT, 12);
+	//public static final Operator DOT_RIGHT_DIV = op(".\\", 2, LEFT, 12);
 
 	// -- additive --
 
@@ -116,7 +116,7 @@ public final class Operators {
 	public static final Operator GREATER_THAN = op(">", 2, LEFT, 8);
 	public static final Operator LESS_THAN_OR_EQUAL = op("<=", 2, LEFT, 8);
 	public static final Operator GREATER_THAN_OR_EQUAL = op(">=", 2, LEFT, 8);
-	public static final Operator INSTANCEOF = op("instanceof", 2, LEFT, 8);
+	//public static final Operator INSTANCEOF = op("instanceof", 2, LEFT, 8);
 
 	// -- equality --
 
@@ -155,13 +155,13 @@ public final class Operators {
 
 	public static final Operator ASSIGN = op("=", 2, RIGHT, 0);
 	public static final Operator POW_ASSIGN = op("^=", 2, RIGHT, 0);
-	public static final Operator DOT_POW_ASSIGN = op(".^=", 2, RIGHT, 0);
+	//public static final Operator DOT_POW_ASSIGN = op(".^=", 2, RIGHT, 0);
 	public static final Operator MUL_ASSIGN = op("*=", 2, RIGHT, 0);
 	public static final Operator DIV_ASSIGN = op("/=", 2, RIGHT, 0);
 	public static final Operator MOD_ASSIGN = op("%=", 2, RIGHT, 0);
 	public static final Operator RIGHT_DIV_ASSIGN = op("\\=", 2, RIGHT, 0);
-	public static final Operator DOT_DIV_ASSIGN = op("./=", 2, RIGHT, 0);
-	public static final Operator DOT_RIGHT_DIV_ASSIGN = op(".\\=", 2, RIGHT, 0);
+	//public static final Operator DOT_DIV_ASSIGN = op("./=", 2, RIGHT, 0);
+	//public static final Operator DOT_RIGHT_DIV_ASSIGN = op(".\\=", 2, RIGHT, 0);
 	public static final Operator ADD_ASSIGN = op("+=", 2, RIGHT, 0);
 	public static final Operator SUB_ASSIGN = op("-=", 2, RIGHT, 0);
 	public static final Operator AND_ASSIGN = op("&=", 2, RIGHT, 0);
@@ -178,9 +178,9 @@ public final class Operators {
 					BRACKETS,
 					BRACES,
 					TRANSPOSE,
-					DOT_TRANSPOSE,
+					//DOT_TRANSPOSE,
 					POW,
-					DOT_POW,
+					//DOT_POW,
 					POST_INC,
 					POST_DEC,
 					PRE_INC,
@@ -193,9 +193,9 @@ public final class Operators {
 					DIV,
 					MOD,
 					RIGHT_DIV,
-					DOT_MUL,
-					DOT_DIV,
-					DOT_RIGHT_DIV,
+					//DOT_MUL,
+					//DOT_DIV,
+					//DOT_RIGHT_DIV,
 					ADD,
 					SUB,
 					LEFT_SHIFT,
@@ -205,7 +205,7 @@ public final class Operators {
 					GREATER_THAN,
 					LESS_THAN_OR_EQUAL,
 					GREATER_THAN_OR_EQUAL,
-					INSTANCEOF,
+					//INSTANCEOF,
 					EQUAL,
 					NOT_EQUAL,
 					BITWISE_AND,
@@ -216,13 +216,13 @@ public final class Operators {
 					COLON,
 					ASSIGN,
 					POW_ASSIGN,
-					DOT_POW_ASSIGN,
+					//DOT_POW_ASSIGN,
 					MUL_ASSIGN,
 					DIV_ASSIGN,
 					MOD_ASSIGN,
 					RIGHT_DIV_ASSIGN,
-					DOT_DIV_ASSIGN,
-					DOT_RIGHT_DIV_ASSIGN,
+					//DOT_DIV_ASSIGN,
+					//DOT_RIGHT_DIV_ASSIGN,
 					ADD_ASSIGN,
 					SUB_ASSIGN,
 					AND_ASSIGN,

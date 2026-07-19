@@ -100,9 +100,9 @@ public class ExpressionParserTest extends AbstractTest {
 		final ExpressionParser p = new ExpressionParser();
 		assertBinary(p, "a", Operators.DOT, "b", "a.b");
 		assertUnary(p, "a", Operators.TRANSPOSE, "a'");
-		assertUnary(p, "a", Operators.DOT_TRANSPOSE, "a.'");
+		//assertUnary(p, "a", Operators.DOT_TRANSPOSE, "a.'");
 		assertBinary(p, "a", Operators.POW, "b", "a^b");
-		assertBinary(p, "a", Operators.DOT_POW, "b", "a.^b");
+		//assertBinary(p, "a", Operators.DOT_POW, "b", "a.^b");
 		assertUnary(p, "a", Operators.PRE_INC, "++a");
 		assertUnary(p, "a", Operators.POST_INC, "a++");
 		assertUnary(p, "a", Operators.PRE_DEC, "--a");
@@ -124,7 +124,7 @@ public class ExpressionParserTest extends AbstractTest {
 		assertBinary(p, "a", Operators.GREATER_THAN, "b", "a>b");
 		assertBinary(p, "a", Operators.LESS_THAN_OR_EQUAL, "b", "a<=b");
 		assertBinary(p, "a", Operators.GREATER_THAN_OR_EQUAL, "b", "a>=b");
-		assertBinary(p, "a", Operators.INSTANCEOF, "b", "a instanceof b");
+		//assertBinary(p, "a", Operators.INSTANCEOF, "b", "a instanceof b");
 		assertBinary(p, "a", Operators.EQUAL, "b", "a==b");
 		assertBinary(p, "a", Operators.NOT_EQUAL, "b", "a!=b");
 		assertBinary(p, "a", Operators.BITWISE_AND, "b", "a&b");
@@ -133,13 +133,13 @@ public class ExpressionParserTest extends AbstractTest {
 		assertBinary(p, "a", Operators.LOGICAL_OR, "b", "a||b");
 		assertBinary(p, "a", Operators.ASSIGN, "b", "a=b");
 		assertBinary(p, "a", Operators.POW_ASSIGN, "b", "a^=b");
-		assertBinary(p, "a", Operators.DOT_POW_ASSIGN, "b", "a.^=b");
+		//assertBinary(p, "a", Operators.DOT_POW_ASSIGN, "b", "a.^=b");
 		assertBinary(p, "a", Operators.MUL_ASSIGN, "b", "a*=b");
 		assertBinary(p, "a", Operators.DIV_ASSIGN, "b", "a/=b");
 		assertBinary(p, "a", Operators.MOD_ASSIGN, "b", "a%=b");
 		assertBinary(p, "a", Operators.RIGHT_DIV_ASSIGN, "b", "a\\=b");
-		assertBinary(p, "a", Operators.DOT_DIV_ASSIGN, "b", "a./=b");
-		assertBinary(p, "a", Operators.DOT_RIGHT_DIV_ASSIGN, "b", "a.\\=b");
+		//assertBinary(p, "a", Operators.DOT_DIV_ASSIGN, "b", "a./=b");
+		//assertBinary(p, "a", Operators.DOT_RIGHT_DIV_ASSIGN, "b", "a.\\=b");
 		assertBinary(p, "a", Operators.ADD_ASSIGN, "b", "a+=b");
 		assertBinary(p, "a", Operators.SUB_ASSIGN, "b", "a-=b");
 		assertBinary(p, "a", Operators.AND_ASSIGN, "b", "a&=b");
@@ -154,16 +154,19 @@ public class ExpressionParserTest extends AbstractTest {
 	public void testMathOperators() {
 		final String expression =
 			"(a|=b)|(c&=d)&(e>>>=f)>>>(g>>=h)>>(i<<=j)<<(k-=l)-(m+=n)"
-				+ "+(o.\\=p).\\(q./=r)./(s\\=t)\\(u%=v)%(w/=x)/(y*=z)"
-				+ "*(aa.^=bb).^(cc^=dd)^f(~ee--,-ff++,+--gg',++hh.')";
+				+ "+(s\\=t)\\(u%=v)%(w/=x)/(y*=z)"
+				+ "*(cc^=dd)^f(~ee--,-ff++,+--gg',++hh)";
 		final ExpressionParser parser = new ExpressionParser();
 		final LinkedList<Object> queue = parser.parsePostfix(expression);
+
 		// a b |= (1) c d &= (1) e f >>>= (1) g h >>= (1) >>> i j <<= (1) >> k l
-		// -= (1) m n += (1) - o p .\= (1) q r ./= (1) .\ s t \= (1) ./ u v %=
-		// (1) \ w x /= (1) % y z *= (1) / aa bb .^= (1) cc dd ^= (1) f ee -- ~
-		// ff ++ - gg ' -- + hh .' ++ (4) <Fn> ^ .^ * + << & |
+		// -= (1) m n += (1) - s t \= (1) u v %= (1) \ w x /= (1) % y z *=
+		// (1) / cc dd ^= (1) f ee -- ~ ff ++ - gg ' -- + hh ++ (4) <Fn> ^ * + << & |
+
+
+
 		assertNotNull(queue);
-		assertEquals(91, queue.size());
+		assertEquals(75, queue.size());
 		assertVariable("a", queue.pop());
 		assertVariable("b", queue.pop());
 		assertSame(Operators.OR_ASSIGN, queue.pop());
@@ -195,20 +198,20 @@ public class ExpressionParserTest extends AbstractTest {
 		assertSame(Operators.ADD_ASSIGN, queue.pop());
 		assertGroup(Operators.PARENS, 1, queue.pop());
 		assertSame(Operators.SUB, queue.pop());
-		assertVariable("o", queue.pop());
-		assertVariable("p", queue.pop());
-		assertSame(Operators.DOT_RIGHT_DIV_ASSIGN, queue.pop());
-		assertGroup(Operators.PARENS, 1, queue.pop());
-		assertVariable("q", queue.pop());
-		assertVariable("r", queue.pop());
-		assertSame(Operators.DOT_DIV_ASSIGN, queue.pop());
-		assertGroup(Operators.PARENS, 1, queue.pop());
-		assertSame(Operators.DOT_RIGHT_DIV, queue.pop());
+		//assertVariable("o", queue.pop());
+		//assertVariable("p", queue.pop());
+		//assertSame(Operators.DOT_RIGHT_DIV_ASSIGN, queue.pop());
+		//assertGroup(Operators.PARENS, 1, queue.pop());
+		//assertVariable("q", queue.pop());
+		//assertVariable("r", queue.pop());
+		//assertSame(Operators.DOT_DIV_ASSIGN, queue.pop());
+		//assertGroup(Operators.PARENS, 1, queue.pop());
+		//assertSame(Operators.DOT_RIGHT_DIV, queue.pop());
 		assertVariable("s", queue.pop());
 		assertVariable("t", queue.pop());
 		assertSame(Operators.RIGHT_DIV_ASSIGN, queue.pop());
 		assertGroup(Operators.PARENS, 1, queue.pop());
-		assertSame(Operators.DOT_DIV, queue.pop());
+		//assertSame(Operators.DOT_DIV, queue.pop());
 		assertVariable("u", queue.pop());
 		assertVariable("v", queue.pop());
 		assertSame(Operators.MOD_ASSIGN, queue.pop());
@@ -224,10 +227,10 @@ public class ExpressionParserTest extends AbstractTest {
 		assertSame(Operators.MUL_ASSIGN, queue.pop());
 		assertGroup(Operators.PARENS, 1, queue.pop());
 		assertSame(Operators.DIV, queue.pop());
-		assertVariable("aa", queue.pop());
-		assertVariable("bb", queue.pop());
-		assertSame(Operators.DOT_POW_ASSIGN, queue.pop());
-		assertGroup(Operators.PARENS, 1, queue.pop());
+		//assertVariable("aa", queue.pop());
+		//assertVariable("bb", queue.pop());
+		//assertSame(Operators.DOT_POW_ASSIGN, queue.pop());
+		//assertGroup(Operators.PARENS, 1, queue.pop());
 		assertVariable("cc", queue.pop());
 		assertVariable("dd", queue.pop());
 		assertSame(Operators.POW_ASSIGN, queue.pop());
@@ -244,12 +247,12 @@ public class ExpressionParserTest extends AbstractTest {
 		assertSame(Operators.PRE_DEC, queue.pop());
 		assertSame(Operators.POS, queue.pop());
 		assertVariable("hh", queue.pop());
-		assertSame(Operators.DOT_TRANSPOSE, queue.pop());
+		//assertSame(Operators.DOT_TRANSPOSE, queue.pop());
 		assertSame(Operators.PRE_INC, queue.pop());
 		assertGroup(Operators.PARENS, 4, queue.pop());
 		assertFunction(queue.pop());
 		assertSame(Operators.POW, queue.pop());
-		assertSame(Operators.DOT_POW, queue.pop());
+		//assertSame(Operators.DOT_POW, queue.pop());
 		assertSame(Operators.MUL, queue.pop());
 		assertSame(Operators.ADD, queue.pop());
 		assertSame(Operators.LEFT_SHIFT, queue.pop());
@@ -261,14 +264,13 @@ public class ExpressionParserTest extends AbstractTest {
 	@Test
 	public void testLogicOperators() {
 		final String expression =
-			"a<b || c>d && e<=f || g>=h && i==j || k!=l && m instanceof n || !o";
+			"a<b || c>d && e<=f || g>=h && i==j || k!=l || !o";
 		final ExpressionParser parser = new ExpressionParser();
 		final LinkedList<Object> queue = parser.parsePostfix(expression);
-		// a b |= c d &= e f >>>= g h >>= >>> i j <<= >> k l -= m n += - o p .\=
-		// q r ./= .\ s t \= ./ u v %= \ w x /= % y z *= / aa bb .^= cc dd ^= ee
-		// -- ~ ff ++ - gg ' -- + hh .' ++ f ^ .^ * + << & |
+		// ??? The comment below did not look correct prior to removing instanceof
+		// a b < c d > e f <= && || g h >= i j == && || k l != || o ! ||
 		assertNotNull(queue);
-		assertEquals(30, queue.size());
+		assertEquals(26, queue.size());
 		assertVariable("a", queue.pop());
 		assertVariable("b", queue.pop());
 		assertSame(Operators.LESS_THAN, queue.pop());
@@ -291,10 +293,10 @@ public class ExpressionParserTest extends AbstractTest {
 		assertVariable("k", queue.pop());
 		assertVariable("l", queue.pop());
 		assertSame(Operators.NOT_EQUAL, queue.pop());
-		assertVariable("m", queue.pop());
-		assertVariable("n", queue.pop());
-		assertSame(Operators.INSTANCEOF, queue.pop());
-		assertSame(Operators.LOGICAL_AND, queue.pop());
+	//	assertVariable("m", queue.pop());
+	//	assertVariable("n", queue.pop());
+	//	assertSame(Operators.INSTANCEOF, queue.pop());
+	//	assertSame(Operators.LOGICAL_AND, queue.pop());
 		assertSame(Operators.LOGICAL_OR, queue.pop());
 		assertVariable("o", queue.pop());
 		assertSame(Operators.NOT, queue.pop());
@@ -728,16 +730,16 @@ public class ExpressionParserTest extends AbstractTest {
 	@Test
 	public void testOperatorPrecedence() {
 		final ExpressionParser parser = new ExpressionParser();
-		final LinkedList<Object> queue = parser.parsePostfix("a+b*c^d.^e'");
-		// a b c d e .^ ^ ' * +
+		final LinkedList<Object> queue = parser.parsePostfix("a+b*c^d'");
+		// a b c d ^ ' * +
 		assertNotNull(queue);
-		assertEquals(10, queue.size());
+		assertEquals(8, queue.size());
 		assertVariable("a", queue.pop());
 		assertVariable("b", queue.pop());
 		assertVariable("c", queue.pop());
 		assertVariable("d", queue.pop());
-		assertVariable("e", queue.pop());
-		assertSame(Operators.DOT_POW, queue.pop());
+		//assertVariable("e", queue.pop());
+		//assertSame(Operators.DOT_POW, queue.pop());
 		assertSame(Operators.POW, queue.pop());
 		assertSame(Operators.TRANSPOSE, queue.pop());
 		assertSame(Operators.MUL, queue.pop());

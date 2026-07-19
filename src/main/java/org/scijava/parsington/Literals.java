@@ -45,17 +45,17 @@ import java.util.regex.Pattern;
 public final class Literals {
 
 	private static final Pattern HEX = Pattern.compile(
-		"(([-+]?)0X([0-9A-F]+)" +
-			"(L|(\\.[0-9A-F]*)?P([-+]?)([0-9]+)([DF]|)|)).*", Pattern.CASE_INSENSITIVE);
+			"(([-+]?)0[Xx]([0-9a-fA-F]+)" +
+					"([Ll]|(\\.[0-9a-fA-F]*)?[Pp]([-+]?)([0-9]+)([Dd]|[Ff]|)|)).*");
 
 	private static final Pattern BINARY = Pattern.compile(
-		"(([-+]?)0B([01]+)(L?)).*", Pattern.CASE_INSENSITIVE);
+			"(([-+]?)0[Bb]([01]+)([Ll]?)).*");
 
 	private static final Pattern OCTAL = Pattern.compile(
-		"(([-+]?)0([0-7]+)(L?)).*", Pattern.CASE_INSENSITIVE);
+			"(([-+]?)0([0-7]+)([Ll]?)).*");
 
 	private static final Pattern DECIMAL = Pattern.compile(
-		"(([-+]?[0-9]+(\\.[0-9]*)?(?:E[-+]?[0-9]+)?)([DFL])?).*", Pattern.CASE_INSENSITIVE);
+			"(([-+]?[0-9]+(\\.[0-9]*)?(?:[Ee][-+]?[0-9]+)?)([DdFfLl])?).*");
 
 	Matcher hexMatcher =  HEX.matcher("");
 	Matcher octalMatcher = OCTAL.matcher("");
