@@ -50,7 +50,7 @@ public interface StandardTreeEvaluator extends StandardEvaluator,
 		// Handle short-circuiting operators first.
 		if (op == Operators.LOGICAL_AND) {
 			final Object leftValue = value(evaluate(tree.child(0)));
-			if (leftValue instanceof Boolean && !((Boolean) leftValue).booleanValue()) {
+			if (leftValue instanceof Boolean && !((Boolean) leftValue)) {
 				// Left side is false, so entire expression will be false.
 				return false;
 			}
@@ -59,7 +59,7 @@ public interface StandardTreeEvaluator extends StandardEvaluator,
 		}
 		else if (op == Operators.LOGICAL_OR) {
 			final Object leftValue = value(evaluate(tree.child(0)));
-			if (leftValue instanceof Boolean && ((Boolean) leftValue).booleanValue()) {
+			if (leftValue instanceof Boolean && ((Boolean) leftValue)) {
 				// Left side is true, so entire expression will be true.
 				return true;
 			}
