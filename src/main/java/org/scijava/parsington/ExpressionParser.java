@@ -54,7 +54,7 @@ public class ExpressionParser {
 	private static final String DEFAULT_STATEMENT_SEPARATOR = ";";
 
 	private final List<Operator> operators;
-	private final List<Operator> groups;
+	private final List<Group> groups;
 	private final String elementSeparator;
 	private final String statementSeparator;
 	private final BiFunction<ExpressionParser, String, ParseOperation> parseOperationFactory;
@@ -204,7 +204,7 @@ public class ExpressionParser {
 	 *
 	 * @return Groups operators list
 	 */
-	public List<Operator> groups() {
+	public List<Group> groups() {
 		return groups;
 	}
 
@@ -258,11 +258,11 @@ public class ExpressionParser {
 		return startingParsingNodeOperator;
 	}
 
-	public List<Operator> buildGroups() {
-		List<Operator> groupsList = new ArrayList<>();
+	public List<Group> buildGroups() {
+		List<Group> groupsList = new ArrayList<>();
 		for (Operator op : operators()) {
 			if (op instanceof Group) {
-				groupsList.add(op);
+				groupsList.add((Group) op);
 			}
 		}
 		return groupsList;
