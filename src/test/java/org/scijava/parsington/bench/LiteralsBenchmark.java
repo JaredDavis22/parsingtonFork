@@ -41,6 +41,7 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.scijava.parsington.Literals;
 
+
 /**
  * Benchmarks single-token literal parsing&mdash;the hot path highlighted in
  * <a href="https://github.com/scijava/parsington/issues/24">issue #24</a>,
@@ -90,14 +91,16 @@ public class LiteralsBenchmark {
 	public Token token;
 
 	private String tokenText;
+	private Literals literals;
 
 	@Setup
 	public void setUp() {
 		tokenText = token.text();
+		literals = new Literals();
 	}
 
 	@Benchmark
 	public Object parseSingleLiteral() {
-		return Literals.parseLiteral(tokenText);
+		return literals.parseLiteral(tokenText);
 	}
 }
