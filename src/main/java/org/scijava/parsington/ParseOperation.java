@@ -245,15 +245,15 @@ public class ParseOperation {
 	 */
 	protected Operator parseOperator() {
 		ParsingNode<Operator> node = parsingNodeOperatorStart;
-		List<Operator> lastHit = null;
+		Deque<List<Operator>> hits = new ArrayDeque<>();
 		int ndx = pos.get();
 		int last = expression.length();
 		while ((ndx < last) && (node != null)) {
 			node = node.hasValueNext(expression.charAt(ndx++));
-			if ((node != null) && (node.getPayload() != null)) lastHit = node.getPayload();
+			if ((node != null) && (node.getPayload() != null)) hits.push(node.getPayload());
 		}
-		if (lastHit != null) {
-			for (Operator op : lastHit) {
+		while (!hits.isEmpty()) {
+			for (Operator op : hits.pop()) {
 				if (operatorMatches(op, op.getToken())) return op;
 			}
 		}
