@@ -403,7 +403,7 @@ public final class Literals {
 		final Matcher m = decimalMatcher.reset(sub(s, pos));
 		if (!m.matches()) return null;
 		final String number = m.group(2);
-		final String force = m.group(4);
+		final String force = m.group(5);
 		final boolean forceLong = "l".equalsIgnoreCase(force);
 		final boolean forceFloat = "f".equalsIgnoreCase(force);
 		final boolean forceDouble = "d".equalsIgnoreCase(force);
