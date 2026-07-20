@@ -270,8 +270,7 @@ public class ParseOperation {
 	 */
 	protected Group parseGroupTerminator() {
 		for (final Group group : parser.groups()) {
-			final String symbol = group.getTerminator();
-			if (operatorMatches(group, symbol)) return group;
+			if (operatorMatches(group, group.getTerminator())) return group;
 		}
 		return null;
 	}
