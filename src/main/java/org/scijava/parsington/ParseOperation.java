@@ -269,10 +269,9 @@ public class ParseOperation {
 	 * @return The group, or null if the next token is not a group terminator.
 	 */
 	protected Group parseGroupTerminator() {
-		for (final Operator op : parser.groups()) {
-			final Group group = (Group) op;
+		for (final Group group : parser.groups()) {
 			final String symbol = group.getTerminator();
-			if (operatorMatches(op, symbol)) return group;
+			if (operatorMatches(group, symbol)) return group;
 		}
 		return null;
 	}
