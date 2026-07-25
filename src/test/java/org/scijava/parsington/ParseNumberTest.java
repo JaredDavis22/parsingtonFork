@@ -29,83 +29,18 @@
 
 package org.scijava.parsington;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
-import org.junit.jupiter.api.Test;
 
 /**
  * Tests {@link Literals}.
  *
  * @author Curtis Rueden
  */
-public class LiteralsTest extends AbstractTest {
+public class ParseNumberTest extends AbstractTest {
 
-	@Test
-	public void testParseBoolean() {
-		assertSame(Boolean.FALSE, Literals.parseBoolean("false"));
-		assertSame(Boolean.TRUE, Literals.parseBoolean("true"));
-
-		assertNull(Literals.parseBoolean("zfalse"));
-		assertNull(Literals.parseBoolean("zfalsez"));
-		assertNull(Literals.parseBoolean("ztrue"));
-		assertNull(Literals.parseBoolean("ztruez"));
-
-		final Position pos = new Position();
-		pos.set(0);
-		assertSame(Boolean.FALSE, Literals.parseBoolean("false-", pos));
-		assertEquals(5, pos.get());
-		pos.set(0);
-		assertSame(Boolean.TRUE, Literals.parseBoolean("true-", pos));
-		assertEquals(4, pos.get());
-	}
-
-	@Test
-	public void testParseString() {
-		assertEquals("hello world", Literals.parseString("'hello world'"));
-		// Test escape sequences.
-		assertEquals("a\b\t\n\f\r\"\\z", Literals
-			.parseString("\"a\\b\\t\\n\\f\\r\\\"\\\\z\""));
-		assertEquals("\t\\\t\\\\\t", Literals
-			.parseString("\"\\t\\\\\\t\\\\\\\\\\t\""));
-		// Test Unicode escape sequences.
-		assertEquals("\u9654", Literals.parseString("\"\u9654\""));
-		assertEquals("xyz\u9654abc", Literals.parseString("\"xyz\\u9654abc\""));
-		// Test octal escape sequences.
-		assertEquals("\0", Literals.parseString("\"\\0\""));
-		assertEquals("\00", Literals.parseString("\"\\00\""));
-		assertEquals("\000", Literals.parseString("\"\\000\""));
-		assertEquals("\12", Literals.parseString("\"\\12\""));
-		assertEquals("\123", Literals.parseString("\"\\123\""));
-		assertEquals("\377", Literals.parseString("\"\\377\""));
-		assertEquals("\1234", Literals.parseString("\"\\1234\""));
-		// Test position
-		final Position pos = new Position();
-		pos.set(2);
-		assertEquals("cde", Literals.parseString("ab'cde'fg", pos));
-		assertEquals(7, pos.get());
-	}
-
-	@Test
-	public void testParseStringInvalid() {
-		// Test non-string tokens.
-		assertNull(Literals.parseString(""));
-		assertNull(Literals.parseString("1234"));
-		assertNull(Literals.parseString("foo"));
-		assertNull(Literals.parseString("a'b'c"));
-		// Test malformed string literals.
-		try {
-			Literals.parseString("'");
-			fail("IllegalArgumentException expected");
-		}
-		catch (final IllegalArgumentException exc) {
-			assertEquals("Unclosed string literal at index 0", exc.getMessage());
-		}
-	}
 
 	@Test
 	public void testParseHexInteger() {
@@ -231,6 +166,8 @@ public class LiteralsTest extends AbstractTest {
 
 	@Test
 	public void testParseDecimal() {
+		assertNumber(1, ParseNumber.parseAllNumbers("1+2"));
+
 		assertNumber(123456789, ParseNumber.parseAllNumbers("123456789"));
 		// Test explicit long.
 		assertNumber(123456789L, ParseNumber.parseAllNumbers("123456789L"));
@@ -281,34 +218,5 @@ public class LiteralsTest extends AbstractTest {
 		assertNumber(-4.5e-6f, ParseNumber.parseAllNumbers("-4.5e-6f"));
 	}
 
-	@Test
-	public void testParseNumber() {
-		final Position pos = new Position();
-
-		assertNumber(0, ParseNumber.parseAllNumbers("0", pos));
-		assertEquals(1, pos.get());
-
-		pos.set(1);
-		assertNumber(5.7, ParseNumber.parseAllNumbers("a5.7a", pos));
-		assertEquals(4, pos.get());
-
-		pos.set(2);
-		assertNumber(-11, ParseNumber.parseAllNumbers("bb-11bb", pos));
-		assertEquals(5, pos.get());
-
-		pos.set(3);
-		assertNumber(0x123L, ParseNumber.parseAllNumbers("ccc0x123Lccc", pos));
-		assertEquals(9, pos.get());
-	}
-
-	@Test
-	public void testParseLiteral() {
-		assertSame(Boolean.FALSE, Literals.parseLiteral("false"));
-		assertSame(Boolean.TRUE, Literals.parseLiteral("true"));
-
-		assertEquals("fubar", Literals.parseLiteral("'fubar'"));
-
-		assertNumber(0, Literals.parseLiteral("0"));
-	}
 
 }
