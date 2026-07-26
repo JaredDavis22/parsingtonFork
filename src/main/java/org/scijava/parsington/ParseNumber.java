@@ -69,22 +69,27 @@ public class ParseNumber {
     // return null if not a number
     private static ParseNumberResults identifyNumber(String s, int startingPosition) {
         int len = s.length();
-        if (startingPosition >= len)  return null;
         final char first = s.charAt(startingPosition);
-        // quick fail if first char not in this list  += 0-9
-        if ("+-0123456789".indexOf(first) == -1)  return null;
+        boolean hasSign=false;
+        // quick fail if first char not in not 0-9 or a +-
+        if (first < '0' || first > '9') {
+            if (first == '-' || first == '+') {
+                hasSign = true;
+                if (len == 1) {
+                    // fail on just a sign
+                    return null;
+                }
+            } else {
+                return null; // first is not [-+0-9]
+            }
+        }
 
         ParseNumberResults results = new ParseNumberResults();
         results.getBeginGroup()[1] = startingPosition;
         int start = startingPosition;
-
-        // Handle optional leading sign
-        if (first == '-' || first == '+') {
+        if (hasSign) {
             results.setSignIndex(startingPosition);
             start++;
-            if (len == 1) {
-                return null;
-            }
         }
 
         // Check for Hexadecimal prefix (0x or 0X)
