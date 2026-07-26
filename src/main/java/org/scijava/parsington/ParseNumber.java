@@ -79,7 +79,7 @@ public class ParseNumber {
                     // fail on just a sign
                     return null;
                 }
-            } else {
+            } else if (first != '.' ){
                 return null; // first is not [-+0-9]
             }
         }

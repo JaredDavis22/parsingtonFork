@@ -188,7 +188,7 @@ public class ParseNumberTest extends AbstractTest {
 		// This seems to be valid in java but does not match re since a digit is required before the decimal.
 		// assertNull(ParseNumber.parseAllNumbers("+.2 ya"));
 		assertNumber(+.2, ParseNumber.parseAllNumbers("+.2 ya"));
-
+		assertNumber(.2, ParseNumber.parseAllNumbers(".2 ya"));
 
 
 		assertNumber(123456789, ParseNumber.parseAllNumbers("123456789"));
