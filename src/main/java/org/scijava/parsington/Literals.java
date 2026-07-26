@@ -251,8 +251,7 @@ public final class Literals {
 		if (next >= 'a' && next <= 'z') return false;
 		if (next >= 'A' && next <= 'Z') return false;
 		if (next >= '0' && next <= '9') return false;
-		if (next == '_') return false;
-		return true;
-	}
+        return next != '_';
+    }
 
 }
