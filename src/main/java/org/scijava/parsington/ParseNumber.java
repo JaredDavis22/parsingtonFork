@@ -127,7 +127,7 @@ public class ParseNumber {
  * @return true if a potential decimal literal is found, false otherwise
  *
  *
- * Based on regular expression (([-+]?[0-9]+(\.[0-9]*)?([Ee][-+]?[0-9]+)?)([DdFfLl])?).*
+ * Based on regular expression (but not exact) (([-+]?[0-9]+(\.[0-9]*)?([Ee][-+]?[0-9]+)?)([DdFfLl])?).*
  * group 1 = entire matching string. NB: re has .* postfix but this method does not include .* in this group.
  * group 2 is from start of string including optional groups 3 and 4
  * group 3 is \. then [0-9]*
@@ -135,7 +135,7 @@ public class ParseNumber {
  * group 5 is [DdFfLl]?
  *
  * group 6 is not in re. [-+]? at start of string
- * group 7 is not in re. [0-9]+ after sign, before group 3
+ * group 7 is not in re. Digits after sign, before group 3. re has [0-9]+ but changed to [0-9]* to match java numeric parsing
  * group 8 is not in re. Leads to group 3 or 4 or 5 or end
  *
  * Octal encoding detection
@@ -169,11 +169,15 @@ public class ParseNumber {
                     if (isDecimalDigit(c)) {
                         start++;
                     } else {
+                        // removed this to match java - it is now a little slower
+                        /*
+                        // this does not follow java - eg parsing +.2 is valid in java.
                         if (results.beginGroup[group] == start) {
                             // need at least 1 digit
                             results.numberType = NumberType.NOT_A_NUMBER;
                             break bigWhile;
                         }
+                         */
                         results.endGroup[group] = start;
                         group = 8;
                     }
@@ -235,8 +239,11 @@ public class ParseNumber {
         } // bigWhile
         results.endGroup[1] = start;
 
-        if (results.endGroup[7] - results.beginGroup[7] == 0)
-            results.numberType = NumberType.NOT_A_NUMBER; // need at least 1 digit in number before decimal
+        int sevenLength = results.endGroup[7] - results.beginGroup[7];
+        int threeLength = results.endGroup[3] - results.beginGroup[3];
+
+        if ((sevenLength == 0) && (threeLength < 2))
+            results.numberType = NumberType.NOT_A_NUMBER; // need at least 1 digit in number after decimal
 
         if (results.beginGroup[4] != -1) { // we got an E
             int minLength = (haveSign) ? 3 : 2;
@@ -245,7 +252,7 @@ public class ParseNumber {
         }
 
         if (results.numberType == null) {
-            if ((results.beginGroup[4] != -1) || (results.endGroup[3] != -1)) {
+            if ((results.beginGroup[4] != -1) || (threeLength > 0)) {
                 results.numberType = NumberType.DOUBLE;
             } else {
                 results.numberType = NumberType.INTEGER;
@@ -264,7 +271,7 @@ public class ParseNumber {
         // octal encoding ?
         if (results.numberType == NumberType.INTEGER) {
             if (s.charAt(results.beginGroup[7]) == '0') {
-                boolean octal = (results.endGroup[7] - results.beginGroup[7] > 1);
+                boolean octal = (sevenLength > 1);
                 if (octal) {
                     for (int i = results.beginGroup[7] + 1; i < results.endGroup[7]; i++) {
                         if (!isOctalDigit(s.charAt(i))) {

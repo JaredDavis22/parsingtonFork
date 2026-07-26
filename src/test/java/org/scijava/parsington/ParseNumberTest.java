@@ -33,6 +33,8 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 
 /**
  * Tests {@link Literals}.
@@ -167,6 +169,27 @@ public class ParseNumberTest extends AbstractTest {
 	@Test
 	public void testParseDecimal() {
 		assertNumber(1, ParseNumber.parseAllNumbers("1+2"));
+		assertNumber(01.01, ParseNumber.parseAllNumbers("01.01"));
+		assertNull(ParseNumber.parseAllNumbers("x01.01 yada")); // x
+		assertNull(ParseNumber.parseAllNumbers("01.01E yada")); // needs digit after E
+		assertNull(ParseNumber.parseAllNumbers("01.01EE yada")); // double E
+		assertNull(ParseNumber.parseAllNumbers("01.01E1.2 yada")); // decimal after E
+		assertNumber(01.01E1, ParseNumber.parseAllNumbers("01.01E1 "));
+		assertNumber(01.01E+1, ParseNumber.parseAllNumbers("01.01E+1 "));
+		assertNumber(01.01E-1, ParseNumber.parseAllNumbers("01.01E-1 "));
+		assertNull(ParseNumber.parseAllNumbers("01.01E++1l "));
+		assertNull(ParseNumber.parseAllNumbers("01.01E--1l "));
+		assertNumber(01.01E-13, ParseNumber.parseAllNumbers("01.01E-13 "));
+		assertNumber(01.01E-13f, ParseNumber.parseAllNumbers("01.01E-13f "));
+		assertNumber(01.01E-13d, ParseNumber.parseAllNumbers("01.01E-13d "));
+		assertNull(ParseNumber.parseAllNumbers("01.01E-13l ")); // will not fit in long
+		assertNull(ParseNumber.parseAllNumbers("+ ya"));
+		assertNull(ParseNumber.parseAllNumbers("+. ya"));
+		// This seems to be valid in java but does not match re since a digit is required before the decimal.
+		// assertNull(ParseNumber.parseAllNumbers("+.2 ya"));
+		assertNumber(+.2, ParseNumber.parseAllNumbers("+.2 ya"));
+
+
 
 		assertNumber(123456789, ParseNumber.parseAllNumbers("123456789"));
 		// Test explicit long.
