@@ -55,6 +55,7 @@ public class ParseNumber {
 
     public static Number parseAllNumbers(String s, Position pos) {
         ParseNumberResults result = ParseNumber.identifyNumber(s, pos.get());
+        if (result == null) return null;
         ParseNumber.processNumber(s, result);
         if (result.getNumber() != null) {
             pos.inc(result.getLength());
@@ -65,28 +66,24 @@ public class ParseNumber {
 
     // identify
 
+    // return null if not a number
     private static ParseNumberResults identifyNumber(String s, int startingPosition) {
+        int len = s.length();
+        if (startingPosition >= len)  return null;
+        final char first = s.charAt(startingPosition);
+        // quick fail if first char not in this list  += 0-9
+        if ("+-0123456789".indexOf(first) == -1)  return null;
+
         ParseNumberResults results = new ParseNumberResults();
         results.getBeginGroup()[1] = startingPosition;
-        if (s == null || s.isEmpty()) {
-            results.numberType = NumberType.NOT_A_NUMBER;
-            return results;
-        }
-        int len = s.length();
-        if (startingPosition >= len) {
-            results.numberType = NumberType.NOT_A_NUMBER;
-            return results;
-        }
         int start = startingPosition;
 
         // Handle optional leading sign
-        char first = s.charAt(startingPosition);
         if (first == '-' || first == '+') {
             results.setSignIndex(startingPosition);
             start++;
             if (len == 1) {
-                results.numberType = NumberType.NOT_A_NUMBER;
-                return results;
+                return null;
             }
         }
 
@@ -105,12 +102,8 @@ public class ParseNumber {
             return results;
         }
 
-        if (start < len && (isDecimalDigit(s.charAt(start)) || s.charAt(start) == '.')) {
-            // try decimal, internally checks for octal
-            extractDecimalNumber(s, start, len, results);
-        } else {
-            results.numberType = NumberType.NOT_A_NUMBER;
-        }
+        // try decimal, internally checks for octal
+        extractDecimalNumber(s, start, len, results);
         return results;
     }
 
