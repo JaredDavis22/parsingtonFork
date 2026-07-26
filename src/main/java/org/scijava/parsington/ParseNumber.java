@@ -7,14 +7,11 @@ import java.math.BigInteger;
 /**
  * Utility methods for parsing numeric literals from strings. These methods largely
  * conform to the Java specification's ideas of what constitutes a numeric literal.
- *
  * Based on a regular expression implementation.
- *
- * initial source from Google Gemini on July 23, 2026 query
+ * Initial source from Google Gemini on July 23, 2026 query
  *   "java fast method to identify integers, doubles, hex and octal numbers in a string"
  * and existing code in Literals
  *
- *  *
  * @author Curtis Rueden, Jared Davis
  */
 
@@ -59,10 +56,10 @@ public class ParseNumber {
     public static Number parseAllNumbers(String s, Position pos) {
         ParseNumberResults result = ParseNumber.identifyNumber(s, pos.get());
         ParseNumber.processNumber(s, result);
-        if (result.number != null) {
+        if (result.getNumber() != null) {
             pos.inc(result.getLength());
         }
-        return result.number;
+        return result.getNumber();
     }
 
 
@@ -70,7 +67,7 @@ public class ParseNumber {
 
     private static ParseNumberResults identifyNumber(String s, int startingPosition) {
         ParseNumberResults results = new ParseNumberResults();
-        results.beginGroup[1] = startingPosition;
+        results.getBeginGroup()[1] = startingPosition;
         if (s == null || s.isEmpty()) {
             results.numberType = NumberType.NOT_A_NUMBER;
             return results;
@@ -85,7 +82,7 @@ public class ParseNumber {
         // Handle optional leading sign
         char first = s.charAt(startingPosition);
         if (first == '-' || first == '+') {
-            results.ndxSign = startingPosition;
+            results.setSignIndex(startingPosition);
             start++;
             if (len == 1) {
                 results.numberType = NumberType.NOT_A_NUMBER;
@@ -127,18 +124,17 @@ public class ParseNumber {
  * @return true if a potential decimal literal is found, false otherwise
  *
  *
- * Based on regular expression (but not exact) (([-+]?[0-9]+(\.[0-9]*)?([Ee][-+]?[0-9]+)?)([DdFfLl])?).*
+ * <p>Based on regular expression (but not exact) (([-+]?[0-9]+(\.[0-9]*)?([Ee][-+]?[0-9]+)?)([DdFfLl])?).*
  * group 1 = entire matching string. NB: re has .* postfix but this method does not include .* in this group.
  * group 2 is from start of string including optional groups 3 and 4
  * group 3 is \. then [0-9]*
  * group 4 is [Ee][-+]?[0-9]+
  * group 5 is [DdFfLl]?
- *
  * group 6 is not in re. [-+]? at start of string
  * group 7 is not in re. Digits after sign, before group 3. re has [0-9]+ but changed to [0-9]* to match java numeric parsing
  * group 8 is not in re. Leads to group 3 or 4 or 5 or end
  *
- * Octal encoding detection
+ * <p>Octal encoding detection
  * If we have (no group 3) and (no group 4) then do a scan for an octal value in group 2
  *  Octal IFF
  *    group 7 starts with 0; does not contain 8 or 9; is longer than 1
@@ -155,12 +151,12 @@ public class ParseNumber {
         boolean haveFour = false;
 
         int group = 7;
-        results.beginGroup[group] = start;
+        results.getBeginGroup()[group] = start;
 
         bigWhile:
         while (start <= end) {
             if (start == end) {
-                results.endGroup[group] = start;
+                results.getEndGroup()[group] = start;
                 break;
             }
             c = s.charAt(start);
@@ -171,14 +167,14 @@ public class ParseNumber {
                     } else {
                         // removed this to match java - it is now a little slower
                         /*
-                        // this does not follow java - eg parsing +.2 is valid in java.
+                        // this does not follow java - e.g. parsing +.2 is valid in java.
                         if (results.beginGroup[group] == start) {
                             // need at least 1 digit
                             results.numberType = NumberType.NOT_A_NUMBER;
                             break bigWhile;
                         }
                          */
-                        results.endGroup[group] = start;
+                        results.getEndGroup()[group] = start;
                         group = 8;
                     }
                     break;
@@ -191,7 +187,7 @@ public class ParseNumber {
                         }
                         havedot = true;
                         group = 3;
-                        results.beginGroup[group] = start++;
+                        results.getBeginGroup()[group] = start++;
                         break;
                     }
                     if (isE(c)) {
@@ -201,13 +197,13 @@ public class ParseNumber {
                         }
                         haveFour = true;
                         group = 4;
-                        results.beginGroup[group] = start++;
+                        results.getBeginGroup()[group] = start++;
                         break;
                     }
                     if (isADoubleOrFloatSuffix(c) || isL(c)) {
                         group = 5;
-                        results.beginGroup[group] = start++;
-                        results.endGroup[group] = start;
+                        results.getBeginGroup()[group] = start++;
+                        results.getEndGroup()[group] = start;
                         results.numberType = isL(c) ? NumberType.INTEGER: NumberType.DOUBLE;
                         // break bigWhile fall through below
                     }
@@ -216,7 +212,7 @@ public class ParseNumber {
                     if (isDecimalDigit(c)) {
                         start++;
                     } else {
-                        results.endGroup[group] = start;
+                        results.getEndGroup()[group] = start;
                         group = 8;
                     }
                     break;
@@ -231,28 +227,28 @@ public class ParseNumber {
                     } else if (isDecimalDigit(c)) {
                         start++;
                     } else {
-                        results.endGroup[group] = start;
+                        results.getEndGroup()[group] = start;
                         group = 8; // back to 8 for group 5
                     }
                     break;
             } // switch group
         } // bigWhile
-        results.endGroup[1] = start;
+        results.getEndGroup()[1] = start;
 
-        int sevenLength = results.endGroup[7] - results.beginGroup[7];
-        int threeLength = results.endGroup[3] - results.beginGroup[3];
+        int sevenLength = results.getEndGroup()[7] - results.getBeginGroup()[7];
+        int threeLength = results.getEndGroup()[3] - results.getBeginGroup()[3];
 
         if ((sevenLength == 0) && (threeLength < 2))
             results.numberType = NumberType.NOT_A_NUMBER; // need at least 1 digit in number after decimal
 
-        if (results.beginGroup[4] != -1) { // we got an E
+        if (results.getBeginGroup()[4] != -1) { // we got an E
             int minLength = (haveSign) ? 3 : 2;
-            if (results.endGroup[4] - results.beginGroup[4] < minLength)
+            if (results.getEndGroup()[4] - results.getBeginGroup()[4] < minLength)
                 results.numberType = NumberType.NOT_A_NUMBER; // need at least 1 digit in exponent
         }
 
         if (results.numberType == null) {
-            if ((results.beginGroup[4] != -1) || (threeLength > 0)) {
+            if ((results.getBeginGroup()[4] != -1) || (threeLength > 0)) {
                 results.numberType = NumberType.DOUBLE;
             } else {
                 results.numberType = NumberType.INTEGER;
@@ -261,19 +257,19 @@ public class ParseNumber {
 
         if (results.numberType != NumberType.NOT_A_NUMBER) {
             // group 2 length = group 1 length - group 5 length
-            results.beginGroup[2] = results.beginGroup[1];
-            results.endGroup[2] = results.endGroup[1];
-            if (results.beginGroup[5] != -1) {
-                results.endGroup[2]--;
+            results.getBeginGroup()[2] = results.getBeginGroup()[1];
+            results.getEndGroup()[2] = results.getEndGroup()[1];
+            if (results.getBeginGroup()[5] != -1) {
+                results.getEndGroup()[2]--;
             }
         }
 
         // octal encoding ?
         if (results.numberType == NumberType.INTEGER) {
-            if (s.charAt(results.beginGroup[7]) == '0') {
+            if (s.charAt(results.getBeginGroup()[7]) == '0') {
                 boolean octal = (sevenLength > 1);
                 if (octal) {
-                    for (int i = results.beginGroup[7] + 1; i < results.endGroup[7]; i++) {
+                    for (int i = results.getBeginGroup()[7] + 1; i < results.getEndGroup()[7]; i++) {
                         if (!isOctalDigit(s.charAt(i))) {
                             octal = false;
                             break;
@@ -281,8 +277,8 @@ public class ParseNumber {
                     }
                 }
                 if (octal) {
-                    if (results.beginGroup[5] != -1) {
-                        if (!isL(s.charAt(results.beginGroup[5]))) {
+                    if (results.getBeginGroup()[5] != -1) {
+                        if (!isL(s.charAt(results.getBeginGroup()[5]))) {
                             octal = false;
                         }
                     }
@@ -306,8 +302,8 @@ public class ParseNumber {
      * @param end The index of the last char to parse.
      * @param results contains the parsing details calculated in this method.
      * @return true if a potential binary literal is found, false otherwise
-
-     * based on Regular Expression (([-+]?)0[Bb]([01]+)([Ll]?)).*
+     *
+     * <p>based on Regular Expression (([-+]?)0[Bb]([01]+)([Ll]?)).*
      * group 1 = entire matching string. NB: re has .* postfix but this method does not include .* in this group.
      * group 2 [-+]?  This is processed by the caller and placed into ParseNumberResults ndxSign.
      * group none 0[Bb] must exist. This is processed by the caller.
@@ -320,12 +316,12 @@ public class ParseNumber {
         results.setSignGroup(2);
 
         int group = 3;
-        results.beginGroup[group] = start;
+        results.getBeginGroup()[group] = start;
 
         bigWhile:
         while (start <= end) {
             if (start == end) {
-                results.endGroup[group] = start;
+                results.getEndGroup()[group] = start;
                 break;
             }
             c = s.charAt(start);
@@ -334,39 +330,39 @@ public class ParseNumber {
                     if (isBinaryDigit(c)) {
                         start++;
                     } else {
-                        results.endGroup[group] = start;
+                        results.getEndGroup()[group] = start;
                         group = 4;
                     }
                     break;
                 case 4: // [Ll]?
                     if (isL(c)) {
-                        results.beginGroup[group] = start;
-                        results.endGroup[group] = ++start;
+                        results.getBeginGroup()[group] = start;
+                        results.getEndGroup()[group] = ++start;
                     }
                     // ok - we are done
                     break bigWhile;
             } // switch group
         } // while bigWhile
-        results.endGroup[1] = start;
+        results.getEndGroup()[1] = start;
         // need at least 1 digit in group 3
-        if (results.endGroup[3] - results.beginGroup[3] == 0)
+        if (results.getEndGroup()[3] - results.getBeginGroup()[3] == 0)
             results.numberType = NumberType.NOT_A_NUMBER;
         return (results.numberType == NumberType.BINARY);
     }
 
     /**
-     * Parses a hexidecimal literal. Both hexadecimal integer (e.g.,
-     * {@code 0xfedcba9876543210}) and hexidecimal floating point (e.g.,
+     * Parses a hexadecimal literal. Both hexadecimal integer (e.g.,
+     * {@code 0xfedcba9876543210}) and hexadecimal floating point (e.g.,
      * {@code 0xfedcba.98765432p10f}) are supported.
      *
      * @param s The string from which the numeric literal should be parsed.
      * @param start The index of the string to start the parsing after the sign and 0[Xx] prefix.
      * @param end The index of the last char to parse.
      * @param results contains the parsing details calculated in this method.
-     * @return true if a potential hexidecimal literal is found, false otherwise
+     * @return true if a potential hexadecimal literal is found, false otherwise
      *
      *
-     * based on Regular Expression (([-+]?)0[Xx]([0-9a-fA-F]+)([Ll]|(\\.[0-9a-fA-F]*)?[Pp]([-+]?)([0-9]+)([DdFf]|)|)).*
+     * <p>based on Regular Expression (([-+]?)0[Xx]([0-9a-fA-F]+)([Ll]|(\\.[0-9a-fA-F]*)?[Pp]([-+]?)([0-9]+)([DdFf]|)|)).*
      * group 1 = entire matching string. NB: re has .* postfix but this method does not include .* in this group.
      * group 2 [-+]? This is processed by the caller and placed into ParseNumberResults ndxSign.
      * group none 0[Xx]  This is processed by the caller.
@@ -385,11 +381,11 @@ public class ParseNumber {
         results.setSignGroup(2);
 
         int group = 3;
-        results.beginGroup[3] = start;
+        results.getBeginGroup()[3] = start;
         bigWhile:
         while (start <= end) {
             if (start == end) {
-                results.endGroup[group] = start;
+                results.getEndGroup()[group] = start;
                 break;
             }
             c = s.charAt(start); // start may not change when group changes
@@ -398,19 +394,19 @@ public class ParseNumber {
                     if (isHexDigit(c)) {
                         start++;
                     } else {
-                        results.endGroup[group] = start;
+                        results.getEndGroup()[group] = start;
                         group = 4;
-                        results.beginGroup[group] = start;
+                        results.getBeginGroup()[group] = start;
                     }
                     break;
                 case 4: // [Ll]? group end is adjusted after switch to include groups 5-8.
                     if (isL(c)) {
-                        results.endGroup[group] = ++start;
+                        results.getEndGroup()[group] = ++start;
                         break bigWhile; // end of re. No need to continue parsing chars
                     }
                     if (c == '.') {
                         group = 5;
-                        results.beginGroup[group] = start++;
+                        results.getBeginGroup()[group] = start++;
                         break;
                     }
                     if (isP(c)) {
@@ -419,59 +415,59 @@ public class ParseNumber {
                         break;
                     }
                     // we are done, there is no group 4
-                    results.beginGroup[group] = -1;
+                    results.getBeginGroup()[group] = -1;
                     break bigWhile;
                 case 5: // \.[0-9a-fA-F]* 0..n
                     if (isHexDigit(c)) {
                         start++;
                     } else {
-                        results.endGroup[group] = start;
+                        results.getEndGroup()[group] = start;
                         if (isP(c)) {
                             group = 9;
-                            results.beginGroup[group] = start;
-                            results.endGroup[group] = ++start;
+                            results.getBeginGroup()[group] = start;
+                            results.getEndGroup()[group] = ++start;
                         }
                     }
                     break;
                 case 9: // start -1 == p or P
                     if (isASign(c)) {
                         group = 6;
-                        results.beginGroup[group] = start;
-                        results.endGroup[group] = ++start;
+                        results.getBeginGroup()[group] = start;
+                        results.getEndGroup()[group] = ++start;
                     }
                     group = 7;
                     break;
                 case 7: // [0-9]+ enforce at least 1 char in this group
                     if (isDecimalDigit(c)) {
-                        if (results.beginGroup[group] == -1) results.beginGroup[group] = start;
+                        if (results.getBeginGroup()[group] == -1) results.getBeginGroup()[group] = start;
                         start++;
                     } else {
-                        if (results.beginGroup[group] == -1) {
+                        if (results.getBeginGroup()[group] == -1) {
                             // need at least 1 digit to be valid
                             results.numberType = NumberType.NOT_A_NUMBER;
                             break bigWhile;
                         } else {
-                            results.endGroup[group] = start;
+                            results.getEndGroup()[group] = start;
                             group = 8;
                         }
                     }
                     break;
                 case 8: // [DdFf]?
                     if (isADoubleOrFloatSuffix(c)) {
-                        results.beginGroup[8] = start;
-                        results.endGroup[8] = ++start;
+                        results.getBeginGroup()[8] = start;
+                        results.getEndGroup()[8] = ++start;
                     }
                     break bigWhile;
             } // switch  group
         } // while bigWhile
 
-        results.endGroup[1] = start;
-        results.endGroup[4] = Math.max(results.endGroup[4], Math.max(Math.max(results.endGroup[5], results.endGroup[6]), Math.max(results.endGroup[7], results.endGroup[8])));
+        results.getEndGroup()[1] = start;
+        results.getEndGroup()[4] = Math.max(results.getEndGroup()[4], Math.max(Math.max(results.getEndGroup()[5], results.getEndGroup()[6]), Math.max(results.getEndGroup()[7], results.getEndGroup()[8])));
         // P (in group 9) requires at least one entry in group 7
-        if ((results.beginGroup[9] != -1) && (results.beginGroup[7] == -1))
+        if ((results.getBeginGroup()[9] != -1) && (results.getBeginGroup()[7] == -1))
             results.numberType = NumberType.NOT_A_NUMBER;
         // group 3 must have at least 1 digit
-        if (results.endGroup[3] - results.beginGroup[3] == 0)
+        if (results.getEndGroup()[3] - results.getBeginGroup()[3] == 0)
             results.numberType = NumberType.NOT_A_NUMBER;
         return (results.numberType == NumberType.HEXADECIMAL);
     }
@@ -482,16 +478,16 @@ public class ParseNumber {
         switch (results.numberType) {
             case INTEGER:
             case DOUBLE:
-                results.number = processDecimal(in, results);
+                results.setNumber(processDecimal(in, results));
                 break;
             case HEXADECIMAL:
-                results.number = processHex(in, results);
+                results.setNumber(processHex(in, results));
                 break;
             case BINARY:
-                results.number = processBinary(in, results);
+                results.setNumber(processBinary(in, results));
                 break;
             case OCTAL:
-                results.number = processOctal(in, results);
+                results.setNumber(processOctal(in, results));
                 break;
         }
     }
@@ -529,8 +525,7 @@ public class ParseNumber {
         final String number = sign + results.getGroup(s, 3);
 
         final boolean forceLong = !results.getGroup(s, 4).isEmpty();
-        final Number result = parseIntegerToNumber(number, forceLong, 2);
-        return result;
+        return parseIntegerToNumber(number, forceLong, 2);
     }
 
     // NB: uses decimal regular expression group numbers
@@ -538,8 +533,7 @@ public class ParseNumber {
         final String number = results.getGroup(s, 2);
         final String expSuffix = results.getGroup(s, 5);   // Ll nothing
         final boolean forceLong = "L".equalsIgnoreCase(expSuffix);
-        final Number result = parseIntegerToNumber(number, forceLong, 8);
-        return result;
+        return parseIntegerToNumber(number, forceLong, 8);
     }
 
     private static Number processDecimal(String s, ParseNumberResults results) {
