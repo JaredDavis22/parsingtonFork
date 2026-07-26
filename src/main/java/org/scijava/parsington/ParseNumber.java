@@ -105,8 +105,12 @@ public class ParseNumber {
             return results;
         }
 
-        // try decimal, internally checks for octal
-        extractDecimalNumber(s, start, len, results);
+        if (start < len && (isDecimalDigit(s.charAt(start)) || s.charAt(start) == '.')) {
+            // try decimal, internally checks for octal
+            extractDecimalNumber(s, start, len, results);
+        } else {
+            results.numberType = NumberType.NOT_A_NUMBER;
+        }
         return results;
     }
 
