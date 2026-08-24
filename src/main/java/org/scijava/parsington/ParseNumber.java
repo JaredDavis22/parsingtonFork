@@ -71,6 +71,7 @@ public class ParseNumber {
     // return null if not a number
     private static ParseNumberResults identifyNumber(String s, int startingPosition) {
         int len = s.length();
+        if (startingPosition >= len) return null;
         final char first = s.charAt(startingPosition);
         boolean hasSign=false;
         // quick fail if first char not in not 0-9 or a +- or a .
