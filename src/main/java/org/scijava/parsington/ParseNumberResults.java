@@ -30,8 +30,35 @@
 package org.scijava.parsington;
 
 public class ParseNumberResults {
-	private final int EMPTY = -1;
-	private final int GROUPALL = 1;
+
+	private static final int EMPTY = -1;
+
+	/** Index of the group holding the entire matched literal, in every extraction context. */
+	static final int GROUP_ALL = 1;
+
+	// -- Decimal/octal literal parsing groups (see ParseNumber#extractDecimalOrOctalNumber) --
+	static final int DEC_VALUE = 2;        // number text, with suffix stripped
+	static final int DEC_FRACTION = 3;     // digits after the decimal point
+	static final int DEC_EXPONENT = 4;     // digits (with optional sign) after E/e
+	static final int DEC_SUFFIX = 5;       // D/F/L suffix character
+	static final int DEC_SIGN = 6;         // leading +/- sign
+	static final int DEC_INTEGER_PART = 7; // digits before the decimal point
+
+	// -- Binary literal parsing groups (see ParseNumber#extractBinaryNumber) --
+	static final int BIN_SIGN = 2;   // leading +/- sign
+	static final int BIN_DIGITS = 3; // [01]+
+	static final int BIN_SUFFIX = 4; // L suffix
+
+	// -- Hexadecimal literal parsing groups (see ParseNumber#extractHexNumber) --
+	static final int HEX_SIGN = 2;               // leading +/- sign
+	static final int HEX_DIGITS = 3;             // [0-9a-fA-F]+
+	static final int HEX_SUFFIX_OR_EXPONENT = 4; // L suffix, or (end-adjusted) the whole floating-point extension
+	static final int HEX_FRACTION = 5;           // digits after the decimal point
+	static final int HEX_EXPONENT_SIGN = 6;      // +/- following P/p
+	static final int HEX_EXPONENT_DIGITS = 7;    // digits following P/p
+	static final int HEX_FLOAT_SUFFIX = 8;       // D/F suffix
+	static final int HEX_P_MARKER = 9;           // records the position of the P/p exponent marker
+
 	private final int[] beginGroup = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
 	private final int[] endGroup = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
 	private int signNdx = EMPTY;
@@ -59,7 +86,7 @@ public class ParseNumberResults {
 	}
 
 	int getLength() {
-		return getGroupLength(GROUPALL);
+		return getGroupLength(GROUP_ALL);
 	}
 
 	Number getNumber() {
@@ -71,11 +98,11 @@ public class ParseNumberResults {
 	}
 
 	void setBegin(int ndx) {
-		setBeginGroup(GROUPALL, ndx);
+		setBeginGroup(GROUP_ALL, ndx);
 	}
 
 	void setEnd(int ndx) {
-		setEndGroup(GROUPALL, ndx);
+		setEndGroup(GROUP_ALL, ndx);
 	}
 
 	int setBeginGroup(int group, int ndx) {
