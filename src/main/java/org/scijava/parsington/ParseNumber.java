@@ -497,7 +497,7 @@ public class ParseNumber {
 		final String sign = results.getGroup(s, 2); // + or - or ""
 		final String integer = results.getGroup(s, 3); // hex digits before decimal point
 		final String suffix = results.getGroup(s, 4);  // L or floating point expression
-		final boolean forceLong = "L".equalsIgnoreCase(String.valueOf(suffix));
+		final boolean forceLong = "L".equalsIgnoreCase(suffix);
 
 		final Number result;
 		if (forceLong || suffix.isEmpty()) {
