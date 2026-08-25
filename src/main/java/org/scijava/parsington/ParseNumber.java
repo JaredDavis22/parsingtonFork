@@ -49,8 +49,6 @@ import static org.scijava.parsington.ParseNumberResults.NumberType.*;
 
 public class ParseNumber {
 
-	static long ignoredExceptions = 0; // not thread safe, good enough for rough metric usage
-
 	/**
 	 * Internal parsing state: after the digits of {@link ParseNumberResults#DEC_INTEGER_PART}
 	 * have ended, deciding whether a decimal point, exponent or suffix follows.
@@ -592,12 +590,11 @@ public class ParseNumber {
 			return (int) result; // NB: range check above to avoid silent loss
 		}  catch (NumberFormatException e) {
 			// will not fit in long or bad text
-			ignoredExceptions++; // not thread safe, ok for rough metric
 			if (!forceLong) {
 				try {
 					return new BigInteger(number, base);
 				} catch (final NumberFormatException exc) {
-					ignoredExceptions++;
+					// do nothing
 				}
 			}
 		}
@@ -621,7 +618,6 @@ public class ParseNumber {
 				return Float.parseFloat(number);
 			} catch (final NumberFormatException exc) {
 				// NB: No action needed.
-				ignoredExceptions++;
 			}
 		} else {
 			// Try to fit it into a double.
@@ -629,7 +625,6 @@ public class ParseNumber {
 				return Double.parseDouble(number);
 			} catch (final NumberFormatException exc) {
 				// NB: No action needed.
-				ignoredExceptions++;
 			}
 		}
 
@@ -639,7 +634,6 @@ public class ParseNumber {
 				return new BigDecimal(number);
 			} catch (final NumberFormatException exc) {
 				// NB: No action needed.
-				ignoredExceptions++;
 			}
 		}
 
