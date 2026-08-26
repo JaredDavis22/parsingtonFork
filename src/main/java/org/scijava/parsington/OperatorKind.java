@@ -38,7 +38,7 @@ package org.scijava.parsington;
  * Every {@link Operators} constant except {@link Operators#PARENS}, {@link
  * Operators#BRACKETS} and {@link Operators#BRACES} has a corresponding
  * value here; those three groups are matched structurally via {@link
- * Tokens#isMatchingGroup} instead, since group tokens are not singletons.
+ * Group#matches} instead, since group tokens are not singletons.
  * An {@link Operator} constructed via the public constructor&mdash;e.g. a
  * custom operator belonging to a non-standard grammar&mdash;has a null
  * {@link Operator#getKind() kind}, since it is not one of the standard
