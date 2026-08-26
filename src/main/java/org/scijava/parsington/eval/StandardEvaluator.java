@@ -29,11 +29,7 @@
 
 package org.scijava.parsington.eval;
 
-import org.scijava.parsington.Function;
-import org.scijava.parsington.Operator;
-import org.scijava.parsington.Operators;
-import org.scijava.parsington.Tokens;
-import org.scijava.parsington.Variable;
+import org.scijava.parsington.*;
 
 /**
  * Interface for expression evaluators which support the {@link Operators
@@ -651,66 +647,73 @@ public interface StandardEvaluator extends Evaluator {
 
 		// Let the case logic begin!
 		if (op instanceof Function) return function(a, b);
-		if (op == Operators.DOT) return dot(a, b);
-		if (Tokens.isMatchingGroup(op, Operators.PARENS)) return parens(args);
-		if (Tokens.isMatchingGroup(op, Operators.BRACKETS)) return brackets(args);
-		if (Tokens.isMatchingGroup(op, Operators.BRACES)) return braces(args);
-		if (op == Operators.TRANSPOSE) return transpose(a);
-		if (op == Operators.DOT_TRANSPOSE) return dotTranspose(a);
-		if (op == Operators.POW) return pow(a, b);
-		if (op == Operators.DOT_POW) return dotPow(a, b);
-		if (op == Operators.POST_INC) return postInc(a);
-		if (op == Operators.POST_DEC) return postDec(a);
-		if (op == Operators.PRE_INC) return preInc(a);
-		if (op == Operators.PRE_DEC) return preDec(a);
-		if (op == Operators.POS) return pos(a);
-		if (op == Operators.NEG) return neg(a);
-		if (op == Operators.COMPLEMENT) return complement(a);
-		if (op == Operators.NOT) return not(a);
-		if (op == Operators.MUL) return mul(a, b);
-		if (op == Operators.DIV) return div(a, b);
-		if (op == Operators.MOD) return mod(a, b);
-		if (op == Operators.RIGHT_DIV) return rightDiv(a, b);
-		if (op == Operators.DOT_MUL) return dotMul(a, b);
-		if (op == Operators.DOT_DIV) return dotDiv(a, b);
-		if (op == Operators.DOT_RIGHT_DIV) return dotRightDiv(a, b);
-		if (op == Operators.ADD) return add(a, b);
-		if (op == Operators.SUB) return sub(a, b);
-		if (op == Operators.LEFT_SHIFT) return leftShift(a, b);
-		if (op == Operators.RIGHT_SHIFT) return rightShift(a, b);
-		if (op == Operators.UNSIGNED_RIGHT_SHIFT) return unsignedRightShift(a, b);
-		if (op == Operators.LESS_THAN) return lessThan(a, b);
-		if (op == Operators.GREATER_THAN) return greaterThan(a, b);
-		if (op == Operators.LESS_THAN_OR_EQUAL) return lessThanOrEqual(a, b);
-		if (op == Operators.GREATER_THAN_OR_EQUAL) return greaterThanOrEqual(a, b);
-		if (op == Operators.INSTANCEOF) return instanceOf(a, b);
-		if (op == Operators.EQUAL) return equal(a, b);
-		if (op == Operators.NOT_EQUAL) return notEqual(a, b);
-		if (op == Operators.BITWISE_AND) return bitwiseAnd(a, b);
-		if (op == Operators.BITWISE_OR) return bitwiseOr(a, b);
-		if (op == Operators.LOGICAL_AND) return logicalAnd(a, b);
-		if (op == Operators.LOGICAL_OR) return logicalOr(a, b);
-		if (op == Operators.QUESTION) return question(a, b);
-		if (op == Operators.COLON) return colon(a, b);
-		if (op == Operators.ASSIGN) return assign(a, b);
-		if (op == Operators.POW_ASSIGN) return powAssign(a, b);
-		if (op == Operators.DOT_POW_ASSIGN) return dotPowAssign(a, b);
-		if (op == Operators.MUL_ASSIGN) return mulAssign(a, b);
-		if (op == Operators.DIV_ASSIGN) return divAssign(a, b);
-		if (op == Operators.MOD_ASSIGN) return modAssign(a, b);
-		if (op == Operators.RIGHT_DIV_ASSIGN) return rightDivAssign(a, b);
-		if (op == Operators.DOT_DIV_ASSIGN) return dotDivAssign(a, b);
-		if (op == Operators.DOT_RIGHT_DIV_ASSIGN) return dotRightDivAssign(a, b);
-		if (op == Operators.ADD_ASSIGN) return addAssign(a, b);
-		if (op == Operators.SUB_ASSIGN) return subAssign(a, b);
-		if (op == Operators.AND_ASSIGN) return andAssign(a, b);
-		if (op == Operators.OR_ASSIGN) return orAssign(a, b);
-		if (op == Operators.LEFT_SHIFT_ASSIGN) return leftShiftAssign(a, b);
-		if (op == Operators.RIGHT_SHIFT_ASSIGN) return rightShiftAssign(a, b);
-		if (op == Operators.UNSIGNED_RIGHT_SHIFT_ASSIGN) return unsignedRightShiftAssign(a, b);
 
-		// Unknown operator.
-		return null;
+		if (op instanceof Group) {
+			if (((Group) op).matches(Operators.PARENS)) return parens(args);
+			if (((Group) op).matches(Operators.BRACKETS)) return brackets(args);
+			if (((Group) op).matches(Operators.BRACES)) return braces(args);
+		}
+
+		final OperatorKind kind = op.getKind();
+		if (kind == null) return null; // Unknown operator.
+
+		switch (kind) {
+			case DOT: return dot(a, b);
+			case TRANSPOSE: return transpose(a);
+			case DOT_TRANSPOSE: return dotTranspose(a);
+			case POW: return pow(a, b);
+			case DOT_POW: return dotPow(a, b);
+			case POST_INC: return postInc(a);
+			case POST_DEC: return postDec(a);
+			case PRE_INC: return preInc(a);
+			case PRE_DEC: return preDec(a);
+			case POS: return pos(a);
+			case NEG: return neg(a);
+			case COMPLEMENT: return complement(a);
+			case NOT: return not(a);
+			case MUL: return mul(a, b);
+			case DIV: return div(a, b);
+			case MOD: return mod(a, b);
+			case RIGHT_DIV: return rightDiv(a, b);
+			case DOT_MUL: return dotMul(a, b);
+			case DOT_DIV: return dotDiv(a, b);
+			case DOT_RIGHT_DIV: return dotRightDiv(a, b);
+			case ADD: return add(a, b);
+			case SUB: return sub(a, b);
+			case LEFT_SHIFT: return leftShift(a, b);
+			case RIGHT_SHIFT: return rightShift(a, b);
+			case UNSIGNED_RIGHT_SHIFT: return unsignedRightShift(a, b);
+			case LESS_THAN: return lessThan(a, b);
+			case GREATER_THAN: return greaterThan(a, b);
+			case LESS_THAN_OR_EQUAL: return lessThanOrEqual(a, b);
+			case GREATER_THAN_OR_EQUAL: return greaterThanOrEqual(a, b);
+			case INSTANCEOF: return instanceOf(a, b);
+			case EQUAL: return equal(a, b);
+			case NOT_EQUAL: return notEqual(a, b);
+			case BITWISE_AND: return bitwiseAnd(a, b);
+			case BITWISE_OR: return bitwiseOr(a, b);
+			case LOGICAL_AND: return logicalAnd(a, b);
+			case LOGICAL_OR: return logicalOr(a, b);
+			case QUESTION: return question(a, b);
+			case COLON: return colon(a, b);
+			case ASSIGN: return assign(a, b);
+			case POW_ASSIGN: return powAssign(a, b);
+			case DOT_POW_ASSIGN: return dotPowAssign(a, b);
+			case MUL_ASSIGN: return mulAssign(a, b);
+			case DIV_ASSIGN: return divAssign(a, b);
+			case MOD_ASSIGN: return modAssign(a, b);
+			case RIGHT_DIV_ASSIGN: return rightDivAssign(a, b);
+			case DOT_DIV_ASSIGN: return dotDivAssign(a, b);
+			case DOT_RIGHT_DIV_ASSIGN: return dotRightDivAssign(a, b);
+			case ADD_ASSIGN: return addAssign(a, b);
+			case SUB_ASSIGN: return subAssign(a, b);
+			case AND_ASSIGN: return andAssign(a, b);
+			case OR_ASSIGN: return orAssign(a, b);
+			case LEFT_SHIFT_ASSIGN: return leftShiftAssign(a, b);
+			case RIGHT_SHIFT_ASSIGN: return rightShiftAssign(a, b);
+			case UNSIGNED_RIGHT_SHIFT_ASSIGN: return unsignedRightShiftAssign(a, b);
+			default: return null; // Unreachable.
+		}
 	}
 
 }

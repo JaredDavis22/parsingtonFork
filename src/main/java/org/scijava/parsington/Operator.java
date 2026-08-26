@@ -46,17 +46,48 @@ public class Operator extends Token implements Comparable<Operator> {
 	private final int arity;
 	private final Associativity associativity;
 	private final double precedence;
+	private final OperatorKind kind;
 
 	public Operator(final String symbol, final int arity,
 		final Associativity associativity, final double precedence)
+	{
+		this(symbol, arity, associativity, precedence, null);
+	}
+
+	/**
+	 * Creates a new operator with a known {@link OperatorKind}.
+	 * <p>
+	 * Restricted to this package: only the standard operators declared in
+	 * {@link Operators} have a well-defined {@link OperatorKind}. Operators
+	 * belonging to custom grammars&mdash;created via the public constructor
+	 * above&mdash;have a null kind.
+	 * </p>
+	 */
+	Operator(final String symbol, final int arity,
+		final Associativity associativity, final double precedence,
+		final OperatorKind kind)
 	{
 		super(symbol);
 		this.arity = arity;
 		this.associativity = associativity;
 		this.precedence = precedence;
+		this.kind = kind;
 	}
 
 	// -- Operator methods --
+
+	/**
+	 * Gets which of the standard {@link Operators} constants this operator is,
+	 * for fast {@code enum}-based dispatch.
+	 *
+	 * @return The operator's {@link OperatorKind}, or null if this operator is
+	 *         not one of the standard {@link Operators} constants (e.g. it
+	 *         belongs to a custom grammar, or is a {@link Group} or {@link
+	 *         Function}).
+	 */
+	public OperatorKind getKind() {
+		return kind;
+	}
 
 	/**
 	 * Gets the operator's arity.
