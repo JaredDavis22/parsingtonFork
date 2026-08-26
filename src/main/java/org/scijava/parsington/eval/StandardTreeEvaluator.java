@@ -54,7 +54,7 @@ public interface StandardTreeEvaluator extends StandardEvaluator,
 				return false;
 			}
 			final Object rightValue = value(evaluate(tree.child(1)));
-			return execute(op, new Object[] {leftValue, rightValue});
+			return execute(op, leftValue, rightValue);
 		}
 		else if (op == Operators.LOGICAL_OR) {
 			final Object leftValue = value(evaluate(tree.child(0)));
@@ -63,7 +63,7 @@ public interface StandardTreeEvaluator extends StandardEvaluator,
 				return true;
 			}
 			final Object rightValue = value(evaluate(tree.child(1)));
-			return execute(op, new Object[] {leftValue, rightValue});
+			return execute(op, leftValue, rightValue);
 		}
 		else if (op == Operators.QUESTION) {
 			final SyntaxTree conditional = tree.child(0);
@@ -81,6 +81,15 @@ public interface StandardTreeEvaluator extends StandardEvaluator,
 
 		// Recursively evaluate the subtrees. None of the remaining operators
 		// benefit from short-circuiting, so we can evaluate subexpressions eagerly.
+		if (op.getKind() != null) {
+			// Fast path: a plain unary or binary standard operator. Every such
+			// operator has arity 1 or 2, so we can evaluate directly into the
+			// non-varargs execute overload, without an arguments array.
+			if (op.getArity() == 1) return execute(op, evaluate(tree.child(0)), null);
+			return execute(op, evaluate(tree.child(0)), evaluate(tree.child(1)));
+		}
+
+		// Slow path: a function or group, which may have any arity.
 		final Object[] args = new Object[tree.count()];
 		for (int i = 0; i < args.length; i++) {
 			args[i] = evaluate(tree.child(i));

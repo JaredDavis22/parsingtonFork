@@ -635,7 +635,15 @@ public interface StandardEvaluator extends Evaluator {
 	}
 
 	/**
-	 * Performs an operation.
+	 * Performs an operation of arbitrary arity, including {@link Function}s
+	 * and groups ({@link Operators#PARENS}, {@link Operators#BRACKETS},
+	 * {@link Operators#BRACES}).
+	 * <p>
+	 * Callers that already know they have a plain unary or binary standard
+	 * operator in hand&mdash;i.e. {@link Operator#getKind()} is non-null&mdash;
+	 * can use {@link #execute(Operator, Object, Object)} instead, to avoid
+	 * allocating an arguments array.
+	 * </p>
 	 *
 	 * @param op The operator to execute.
 	 * @param args The arguments to pass.
@@ -654,8 +662,29 @@ public interface StandardEvaluator extends Evaluator {
 			if (((Group) op).matches(Operators.BRACES)) return braces(args);
 		}
 
+		return execute(op, a, b);
+	}
+
+	/**
+	 * Performs a unary or binary operation on one of the standard operators,
+	 * without allocating an arguments array.
+	 * <p>
+	 * Unlike {@link #execute(Operator, Object...)}, this overload does not
+	 * handle {@link Function}s or groups ({@link Operators#PARENS}, {@link
+	 * Operators#BRACKETS}, {@link Operators#BRACES})&mdash;none of which have
+	 * an {@link OperatorKind}&mdash;so it reports them as unknown (i.e.
+	 * returns null). Callers that have not already ruled those out via
+	 * {@link Operator#getKind()} should use the varargs overload instead.
+	 * </p>
+	 *
+	 * @param op The operator to execute.
+	 * @param a The first argument.
+	 * @param b The second argument, or null if the operator is unary.
+	 * @return The result of the operation.
+	 */
+	default Object execute(final Operator op, final Object a, final Object b) {
 		final OperatorKind kind = op.getKind();
-		if (kind == null) return null; // Unknown operator.
+		if (kind == null) return null; // Unknown, function, or group operator.
 
 		switch (kind) {
 			case DOT: return dot(a, b);

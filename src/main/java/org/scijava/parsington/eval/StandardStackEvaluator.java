@@ -46,7 +46,17 @@ public interface StandardStackEvaluator extends StandardEvaluator,
 
 	@Override
 	default Object execute(final Operator op, final Deque<Object> stack) {
-		// Pop the arguments.
+		if (op.getKind() != null) {
+			// Fast path: a plain unary or binary standard operator. Every such
+			// operator has arity 1 or 2, so we can pop directly into the
+			// non-varargs execute overload, without an arguments array.
+			if (op.getArity() == 1) return execute(op, stack.pop(), null);
+			final Object b = stack.pop();
+			final Object a = stack.pop();
+			return execute(op, a, b);
+		}
+
+		// Slow path: a function or group, which may have any arity.
 		final int arity = op.getArity();
 		final Object[] args = new Object[arity];
 		for (int i = args.length - 1; i >= 0; i--) {
