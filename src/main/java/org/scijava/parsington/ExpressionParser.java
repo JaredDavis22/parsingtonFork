@@ -61,10 +61,10 @@ public class ExpressionParser {
 	private final BiFunction<ExpressionParser, String, ParseOperation> parseOperationFactory;
 
 	/** Operators indexed by the first character of their symbol. */
-	private final Map<Character, List<Operator>> operatorsByFirstChar;
+	private final CharIndex<Operator> operatorsByFirstChar = new CharIndex<>();
 
 	/** Groups indexed by the first character of their terminator symbol. */
-	private final Map<Character, List<Group>> groupsByTerminatorFirstChar;
+	private final CharIndex<Group> groupsByTerminatorFirstChar = new CharIndex<>();
 
 	/**
 	 * Creates an expression parser with the standard set of operators and default
@@ -171,13 +171,11 @@ public class ExpressionParser {
 		// rather than rescanning the entire operator list at every token.
 		// Each bucket preserves the sorted order above, so the operator chosen
 		// is the same one a linear scan of the full list would have found.
-		operatorsByFirstChar = new HashMap<>();
-		groupsByTerminatorFirstChar = new HashMap<>();
 		for (final Operator op : this.operators) {
-			bucket(operatorsByFirstChar, op.getToken()).add(op);
+			operatorsByFirstChar.add(op.getToken().charAt(0), op);
 			if (op instanceof Group) {
 				final Group group = (Group) op;
-				bucket(groupsByTerminatorFirstChar, group.getTerminator()).add(group);
+				groupsByTerminatorFirstChar.add(group.getTerminator().charAt(0), group);
 			}
 		}
 	}
@@ -259,13 +257,44 @@ public class ExpressionParser {
 		return statementSeparator;
 	}
 
-	// -- Helper methods --
+	// -- Helper types --
 
-	/** Gets the bucket for the given symbol's first character, creating it if needed. */
-	private static <T> List<T> bucket(final Map<Character, List<T>> index,
-		final String symbol)
-	{
-		return index.computeIfAbsent(symbol.charAt(0), c -> new ArrayList<>());
+	/**
+	 * A {@code char}-keyed multimap, optimized for the common case of an ASCII
+	 * key via a flat array, with a {@link HashMap} fallback for the rare
+	 * non-ASCII case (e.g. a custom grammar with a Unicode operator symbol).
+	 * This avoids boxing the key and hashing it on every lookup, for the
+	 * overwhelming majority of operator symbols which are ASCII punctuation.
+	 */
+	private static final class CharIndex<T> {
+
+		private static final int ASCII_LIMIT = 128;
+
+		@SuppressWarnings("unchecked")
+		private final List<T>[] ascii = new List[ASCII_LIMIT];
+		private final Map<Character, List<T>> overflow = new HashMap<>();
+
+		/** Adds a value to the bucket for the given character. */
+		void add(final char c, final T value) {
+			bucket(c).add(value);
+		}
+
+		/** Gets the bucket for the given character, or null if there is none. */
+		List<T> get(final char c) {
+			return c < ASCII_LIMIT ? ascii[c] : overflow.get(c);
+		}
+
+		private List<T> bucket(final char c) {
+			if (c < ASCII_LIMIT) {
+				List<T> list = ascii[c];
+				if (list == null) {
+					list = new ArrayList<>();
+					ascii[c] = list;
+				}
+				return list;
+			}
+			return overflow.computeIfAbsent(c, k -> new ArrayList<>());
+		}
 	}
 
 }
